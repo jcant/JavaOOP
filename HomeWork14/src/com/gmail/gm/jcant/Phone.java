@@ -34,6 +34,14 @@ public class Phone {
 	}
 
 	public void call(String number) {
+		if (this.number.equals("")) {
+			System.out.println("You must define your number!");
+			return;
+		}
+		if (selfNetwork == null) {
+			System.out.println("You must register your number in network first!");
+			return;
+		}
 		if (this.number.equals(number)) {
 			System.out.println("You can't call to self number!!!");
 			return;

@@ -8,7 +8,9 @@ public class Main {
 		Network kievstar = new Network();
 
 		Phone myPhone = new Phone();
+		myPhone.call("112233");
 		myPhone.setNumber("0661111111");
+		myPhone.call("112233");
 		myPhone.registerInNetwork(mts);
 
 		Phone wife = new Phone("0662222222");
