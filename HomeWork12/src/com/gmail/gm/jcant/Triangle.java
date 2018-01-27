@@ -29,6 +29,10 @@ public class Triangle {
 		}
 
 	}
+	
+	private final boolean isTriangleExist(Double sA, Double sB, Double sC) {
+		return (((sA + sB) > sC) && ((sA + sC) > sB) && (sB + sC) > sA);
+	}
 
 	public Double getSquare() {
 
@@ -36,10 +40,6 @@ public class Triangle {
 
 		return Math.sqrt(p * (p - this.sideA) * (p - this.sideB) * (p - this.sideC));
 
-	}
-
-	private final boolean isTriangleExist(Double sA, Double sB, Double sC) {
-		return (((sA + sB) > sC) && ((sA + sC) > sB) && (sB + sC) > sA);
 	}
 
 	public Double getSideA() {
