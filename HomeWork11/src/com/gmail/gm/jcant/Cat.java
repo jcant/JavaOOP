@@ -27,12 +27,16 @@ public class Cat {
 
 	public int getAge() {
 		int diff = 0;
+		Calendar birthDay = Calendar.getInstance();
 		Calendar day = Calendar.getInstance();
 
-		day.setTime(new Date());
 		diff = day.get(Calendar.YEAR);
-		day.setTime(this.birthday);
-		diff = diff - day.get(Calendar.YEAR);
+		birthDay.setTime(this.birthday);
+		diff = diff - birthDay.get(Calendar.YEAR);
+		day.set(Calendar.YEAR, birthDay.get(Calendar.YEAR));
+		if (birthDay.compareTo(day) >= 0) {
+			diff--;
+		}
 		return diff;
 	}
 
