@@ -13,23 +13,23 @@ public class Main {
 		board.addToCell(0, tr1);
 		board.addToCell(2, el1);
 		board.addToCell(3, rec1);
-		board.printStatus();
+		System.out.println(board);
 		System.out.println(String.format("Perimetr summ: %.2f;  Area summ: %.2f;", board.getSummPerimetr(), board.getSummArea()));
 		System.out.println();
 
 		board.addToCell(1, rec2);
-		board.printStatus();
+		System.out.println(board);
 		System.out.println(String.format("Perimetr summ: %.2f;  Area summ: %.2f;", board.getSummPerimetr(), board.getSummArea()));
 		System.out.println();
 
 		board.clearBoardCell(1);
 		board.clearBoardCell(2);
-		board.printStatus();
+		System.out.println(board);
 		System.out.println(String.format("Perimetr summ: %.2f;  Area summ: %.2f;", board.getSummPerimetr(), board.getSummArea()));
 		System.out.println();
 
 		board.clearBoard();
-		board.printStatus();
+		System.out.println(board);
 		System.out.println(String.format("Perimetr summ: %.2f;  Area summ: %.2f;", board.getSummPerimetr(), board.getSummArea()));
 		System.out.println();
 	}
