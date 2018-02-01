@@ -32,15 +32,15 @@ public class Triangle extends Shape {
 	}
 
 	private double getSide1() {
-		return Math.sqrt(Math.pow((pB.getX() - pA.getX()), 2) + Math.pow((pB.getY() - pA.getY()), 2));
+		return pB.getDistanceTo(pA);
 	}
 
 	private double getSide2() {
-		return Math.sqrt(Math.pow((pC.getX() - pB.getX()), 2) + Math.pow((pC.getY() - pB.getY()), 2));
+		return pC.getDistanceTo(pB);
 	}
 
 	private double getSide3() {
-		return Math.sqrt(Math.pow((pA.getX() - pC.getX()), 2) + Math.pow((pA.getY() - pC.getY()), 2));
+		return pA.getDistanceTo(pC);
 	}
 
 	public Point getpA() {

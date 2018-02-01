@@ -1,34 +1,13 @@
 package com.gmail.gm.jcant;
 
-import java.util.Arrays;
-
 public class Board {
 
+	private final int BOARDSIZE = 4;
 	private Shape[] figures;
 
 	public Board() {
 		super();
-		figures = new Shape[4];
-	}
-
-	public void printStatus() {
-		System.out.println("*** Board status *** ");
-		for (int i = 0; i < figures.length; i++) {
-			System.out.print("[" + i + "] ");
-			String info = "";
-			if (figures[i] != null) {
-				info = String.format(figures[i].getClass().getSimpleName() + " Per=%.2f Area=%.2f",
-						figures[i].getPerimetr(), figures[i].getArea());
-			} else {
-				info = "NULL";
-			}
-			System.out.println(info);
-		}
-		System.out.println("--------------------");
-		System.out.println(String.format("Summ Perimetr = %.2f", getSummPerimetr()));
-		System.out.println(String.format("Summ Area     = %.2f", getSummArea()));
-		System.out.println("*** ************ ***");
-		System.out.println();
+		figures = new Shape[BOARDSIZE];
 	}
 
 	public double getSummPerimetr() {
@@ -51,21 +30,48 @@ public class Board {
 		return result;
 	}
 
-	public void addToCell(int cellNum, Shape shape) {
-		figures[cellNum] = shape;
+	public boolean addToCell(int cellNum, Shape shape) {
+		if ((cellNum >= 0) && (cellNum < BOARDSIZE)) {
+			figures[cellNum] = shape;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean clearBoardCell(int cellNum) {
+		if ((cellNum >= 0) && (cellNum < BOARDSIZE)) {
+			figures[cellNum] = null;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void clearBoard() {
 		figures = new Shape[4];
 	}
 
-	public void clearBoardCell(int cellNum) {
-		figures[cellNum] = null;
-	}
-
 	@Override
 	public String toString() {
-		return "Board [figures=" + Arrays.toString(figures) + "]";
+		StringBuilder sb = new StringBuilder();
+		sb.append("*** Board status *** " + System.lineSeparator());
+		for (int i = 0; i < figures.length; i++) {
+			sb.append("[" + i + "] ");
+			String info = "";
+			if (figures[i] != null) {
+				info = String.format("%-10.10s Per=%-5.5s Area=%.2f", figures[i].getClass().getSimpleName(),
+						figures[i].getPerimetr(), figures[i].getArea());
+			} else {
+				info = "NULL";
+			}
+			sb.append(info + System.lineSeparator());
+		}
+		sb.append("--------------------" + System.lineSeparator());
+		sb.append(String.format("Summ Perimetr = %.2f", getSummPerimetr()) + System.lineSeparator());
+		sb.append(String.format("Summ Area     = %.2f", getSummArea()) + System.lineSeparator());
+		sb.append("*** ************ ***" + System.lineSeparator());
+		return sb.toString();
 	}
 
 }
