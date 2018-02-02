@@ -89,5 +89,9 @@ public class Human {
 	public void setHeight(double height) {
 		this.height = height;
 	}
+	
+	public void setDateFormat(String format) {
+		this.birthday.setFormat(format);
+	}
 
 }

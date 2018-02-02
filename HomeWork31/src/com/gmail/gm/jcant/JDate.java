@@ -13,6 +13,7 @@ public class JDate {
 	private Calendar calendar;
 	private String format;
 
+	// --- constructors ---
 	public JDate() {
 		super();
 		calendar = Calendar.getInstance();
@@ -20,31 +21,20 @@ public class JDate {
 
 	public JDate(Date date) {
 		super();
-		this.format = defaultFormat;
 		calendar = Calendar.getInstance();
-		setDate(date);
+		initDate(date);
 	}
 
 	public JDate(String date, String format) {
 		super();
 		this.format = format;
 		calendar = Calendar.getInstance();
-		setDate(date);
+		initDate(date);
 	}
 
-	public static Date getDate(String date) {
-		SimpleDateFormat sdf = new SimpleDateFormat(defaultFormat);
-		Date result = null;
-		try {
-			result = sdf.parse(date);
-		} catch (ParseException e) {
-			System.err.println("Error getting quick date!");
-		}
-		return result;
-	}
-
-	public void setDate(String date) {
-		SimpleDateFormat sdf = new SimpleDateFormat(format);
+	private final void initDate(String date) {
+		String currFormat = (format!=null)?(format):(defaultFormat);
+		SimpleDateFormat sdf = new SimpleDateFormat(currFormat);
 		try {
 			this.date = sdf.parse(date);
 			calendar.setTime(this.date);
@@ -52,10 +42,19 @@ public class JDate {
 			System.err.println("Error setting date!");
 		}
 	}
-
-	public void setDate(Date date) {
+	
+	private final void initDate(Date date) {
 		this.date = date;
 		calendar.setTime(date);
+	}
+	
+	// --- setters getters ---
+	public void setDate(String date) {
+		initDate(date);
+	}
+
+	public void setDate(Date date) {
+		initDate(date);
 	}
 
 	public Date getDate() {
@@ -66,13 +65,18 @@ public class JDate {
 		return calendar;
 	}
 
+	public void setFormat(String format) {
+		this.format = format;
+	}
+	
 	public String getFormat() {
 		return format;
 	}
 
 	@Override
 	public String toString() {
-		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		String currFormat = (format!=null)?(format):(defaultFormat);
+		SimpleDateFormat sdf = new SimpleDateFormat(currFormat);
 		return sdf.format(date);
 	}
 
@@ -88,6 +92,23 @@ public class JDate {
 		}
 
 		return diff;
+	}
+	
+	
+	// --- static ---
+	public static Date getDate(String date) {
+		SimpleDateFormat sdf = new SimpleDateFormat(defaultFormat);
+		Date result = null;
+		try {
+			result = sdf.parse(date);
+		} catch (ParseException e) {
+			System.err.println("Error getting quick date!");
+		}
+		return result;
+	}
+	
+	public static void setDefaultFormat(String format) {
+		defaultFormat = format;
 	}
 
 }
