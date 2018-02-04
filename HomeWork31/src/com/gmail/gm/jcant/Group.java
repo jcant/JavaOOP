@@ -38,10 +38,6 @@ public class Group {
 		return result;
 	}
 
-	// ask: если свое исключение наследовать от Exception тогда компилятор требует
-	// указания throws в описании метода
-	// если наследовать от Error тогда не требует указания throws, но в обоих
-	// случаях обработка исключеня работает одинаково, зачем нужен throws?
 	public void addStudent(Student student) throws TooManyStudentsStudentGroupException {
 		if (studentsCount >= GROUPSIZE) {
 			throw new TooManyStudentsStudentGroupException();
