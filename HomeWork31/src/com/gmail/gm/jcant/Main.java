@@ -110,33 +110,4 @@ public class Main {
 		return sb.toString();
 	}
 
-	public static int compareStrings(String str1, String str2) {
-		int length1 = str1.length();
-		int length2 = str2.length();
-		str1 = str1.toLowerCase();
-		str2 = str2.toLowerCase();
-
-		int result = 0;
-
-		int minLength = (length1 < length2) ? (length1) : (length2);
-
-		for (int i = 0; i < minLength; i++) {
-			if (str1.charAt(i) < str2.charAt(i)) {
-				result = -1;
-				break;
-			} else if (str1.charAt(i) > str2.charAt(i)) {
-				result = 1;
-				break;
-			}
-		}
-
-		if ((result == 0) && (length1 > length2)) {
-			result = 1;
-		} else if ((result == 0) && (length1 < length2)) {
-			result = -1;
-		}
-
-		return result;
-	}
-
 }
