@@ -1,24 +1,142 @@
 package com.gmail.gm.jcant;
 
+import java.util.Date;
+
 public class Main {
 
 	public static void main(String[] args) {
 
-		Student stud1 = new Student("Jenya", "Isaev", JDate.getDate("25-11-2002"), true, 60.5, 170.2, "KPI", JDate.getDate("01-09-2016"), 10.5);
-		Student stud2 = new Student("Tanya", "Isaeva", JDate.getDate("16-03-1979"), false, 48.5, 151, "KPI", JDate.getDate("01-09-2014"), 9.6);
-		
-		System.out.println("Student1: " + stud1);
-		System.out.println("Student2: " + stud2);
-		
-		Student[] arrSt = {stud1, stud2,stud1, stud2,stud1, stud2,stud1, stud2,stud1, stud2};
-		
-		Group gr1 = new Group(arrSt);
-		
-		
-		System.out.println("Group1:");
-		System.out.println(gr1);
+		Group[] groupsArray = new Group[3];
 
+		testArrayInit(groupsArray);
+		printGroups(groupsArray);
 
+		testAddStudents(groupsArray[0], 5);
+		testAddStudents(groupsArray[1], 10);
+		printGroups(groupsArray);
+
+		testDeleteStudents(groupsArray[0], new int[] { 1, 2, 3, 4, 5, 6, 7, 8 });
+		testDeleteStudents(groupsArray[2], new int[] { 0, 5, 12 });
+		printGroups(groupsArray);
+
+		// test find by surname:
+		Group gr2 = new Group();
+		for (int i = 0; i < 5; i++) {
+			gr2.addStudent(new Student("Sveta" + i, "Ivanova1", JDate.getDate("16-03-1999"), false, 45, 160, "SVMI",
+					JDate.getDate("01-09-2015"), 11.5));
+			gr2.addStudent(new Student("Sveta" + 2 * (i + 1), "Ivanova2", JDate.getDate("16-03-1999"), false, 45, 160,
+					"SVMI", JDate.getDate("01-09-2015"), 11.5));
+		}
+
+		System.out.println(gr2);
+
+		Student[] students = gr2.findStudentBySurname("Ivanova1");
+		for (Student student : students) {
+			System.out.println(student);
+		}
+
+	}
+
+	public static void testArrayInit(Group[] groups) {
+		for (int i = 0; i < groups.length; i++) {
+			Student[] arrSt = getStudentsArray((int) (1 + Math.random() * 15));
+
+			try {
+				groups[i] = new Group(arrSt);
+			} catch (TooBigInitArrayStudentGroupException e) {
+				System.err.println("Error init Group[" + i + "]  by array");
+				System.err.println(e);
+				groups[i] = new Group();
+			}
+		}
+	}
+
+	public static void testAddStudents(Group gr, int howMany) {
+		Student[] stArray = getStudentsArray(howMany);
+		for (int i = 0; i < stArray.length; i++) {
+			System.out.println("Add student " + (i + 1) + " from " + howMany);
+			try {
+				gr.addStudent(stArray[i]);
+			} catch (TooManyStudentsStudentGroupException e) {
+				System.err.println("Error add student");
+				System.err.println(e);
+				break;
+			}
+
+		}
+	}
+
+	public static void testDeleteStudents(Group gr, int[] inds) {
+		for (int i = 0; i < inds.length; i++) {
+			System.out.println("Delete student " + inds[i] + " from group");
+			try {
+				gr.deleteStudent(inds[i]);
+			} catch (InvalidStudentNumberStudentGroupException e) {
+				System.err.println("Error delete student");
+				System.err.println(e);
+			}
+		}
+	}
+
+	public static void printGroups(Group[] groups) {
+		for (int i = 0; i < groups.length; i++) {
+			System.out.println("Group " + i + ":");
+			System.out.println(groups[i]);
+		}
+	}
+
+	public static Student[] getStudentsArray(int size) {
+		Student[] result = new Student[size];
+		for (int i = 0; i < size; i++) {
+			Date dayBirth = JDate.getDate("" + (int) (1 + Math.random() * 30) + "-" + (int) (1 + Math.random() * 12)
+					+ "-" + (int) (1995 + Math.random() * 15));
+			Date dayIn = JDate.getDate("" + (int) (1 + Math.random() * 30) + "-" + (int) (1 + Math.random() * 12) + "-"
+					+ (int) (2015 + Math.random() * 3));
+
+			result[i] = new Student(getWord(), getWord(), dayBirth, ((i % 2) == 0), 60.5, 170.2, "KPI", dayIn, 10.5);
+		}
+
+		return result;
+	}
+
+	public static String getWord() {
+		int length = (int) (3 + Math.random() * 3);
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < length; i++) {
+			char ch = (i == 0) ? ((char) (65 + Math.random() * 25)) : ((char) (97 + Math.random() * 25));
+			sb.append(ch);
+		}
+
+		return sb.toString();
+	}
+
+	public static int compareStrings(String str1, String str2) {
+		int length1 = str1.length();
+		int length2 = str2.length();
+		str1 = str1.toLowerCase();
+		str2 = str2.toLowerCase();
+
+		int result = 0;
+
+		int minLength = (length1 < length2) ? (length1) : (length2);
+
+		for (int i = 0; i < minLength; i++) {
+			if (str1.charAt(i) < str2.charAt(i)) {
+				result = -1;
+				break;
+			} else if (str1.charAt(i) > str2.charAt(i)) {
+				result = 1;
+				break;
+			}
+		}
+
+		if ((result == 0) && (length1 > length2)) {
+			result = 1;
+		} else if ((result == 0) && (length1 < length2)) {
+			result = -1;
+		}
+
+		return result;
 	}
 
 }

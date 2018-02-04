@@ -24,10 +24,11 @@ public class Student extends Human {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(getName() + " " + getSurname() + ", ");
-		sb.append(((isMale()) ? ("man") : ("woman")) + ", ");
-		sb.append("Age: " + getAge() + ", ");
-		sb.append("Institute: " + institutionName + ", ");
+
+		sb.append(String.format("%-10.10s %-10.10s", getName(), getSurname() + ","));
+		sb.append(String.format("  %-8.8s", ((isMale()) ? ("man") : ("woman") + ",")));
+		sb.append(String.format("Age: %-8.8s", getAge() + ","));
+		sb.append(String.format("Institute: %-10.10s", institutionName + ","));
 		sb.append("Course: " + getCourse() + " ");
 		return sb.toString();
 	}
