@@ -22,10 +22,15 @@ public class Main {
 		// test find by surname:
 		Group gr2 = new Group();
 		for (int i = 0; i < 5; i++) {
-			gr2.addStudent(new Student("Sveta" + i, "Ivanova1", JDate.getDate("16-03-1999"), false, 45, 160, "SVMI",
-					JDate.getDate("01-09-2015"), 11.5));
-			gr2.addStudent(new Student("Sveta" + 2 * (i + 1), "Ivanova2", JDate.getDate("16-03-1999"), false, 45, 160,
-					"SVMI", JDate.getDate("01-09-2015"), 11.5));
+			try {
+				gr2.addStudent(new Student("Sveta" + i, "Ivanova1", JDate.getDate("16-03-1999"), false, 45, 160, "SVMI",
+						JDate.getDate("01-09-2015"), 11.5));
+				gr2.addStudent(new Student("Sveta" + 2 * (i + 1), "Ivanova2", JDate.getDate("16-03-1999"), false, 45,
+						160, "SVMI", JDate.getDate("01-09-2015"), 11.5));
+			} catch (TooManyStudentsStudentGroupException e) {
+				e.printStackTrace();
+			}
+
 		}
 
 		System.out.println(gr2);
@@ -35,19 +40,21 @@ public class Main {
 			System.out.println(student);
 		}
 
+		// try add null student:
+		try {
+			gr2.addStudent(null);
+		} catch (TooManyStudentsStudentGroupException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public static void testArrayInit(Group[] groups) {
 		for (int i = 0; i < groups.length; i++) {
+			// get random students array:
 			Student[] arrSt = getStudentsArray((int) (1 + Math.random() * 15));
 
-			try {
-				groups[i] = new Group(arrSt);
-			} catch (TooBigInitArrayStudentGroupException e) {
-				System.err.println("Error init Group[" + i + "]  by array");
-				System.err.println(e);
-				groups[i] = new Group();
-			}
+			groups[i] = new Group(arrSt);
 		}
 	}
 

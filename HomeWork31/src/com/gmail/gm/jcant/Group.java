@@ -13,32 +13,30 @@ public class Group {
 	}
 
 	public Group(Student[] students) {
-		initGroupArray(students);
+		this.students = new Student[GROUPSIZE];
+		try {
+			initGroupArray(students);
+		} catch (StudentGroupExceptions e) {
+			e.printStackTrace();
+		}
 	}
 
-	private final void initGroupArray(Student[] students) throws TooBigInitArrayStudentGroupException {
+	private final void initGroupArray(Student[] students) throws StudentGroupExceptions {
+
 		if (students.length > GROUPSIZE) {
 			throw new TooBigInitArrayStudentGroupException();
 		} else {
-			this.students = Arrays.copyOf(students, GROUPSIZE);
-			this.studentsCount = students.length;
-		}
-	}
-
-	public Student[] findStudentBySurname(String surname) {
-		Student[] result = new Student[0];
-
-		for (int i = 0; i < studentsCount; i++) {
-			if (surname.equals(students[i].getSurname())) {
-				result = Arrays.copyOf(result, result.length + 1);
-				System.arraycopy(new Student[] { students[i] }, 0, result, result.length - 1, 1);
+			for (Student student : students) {
+				addStudent(student);
 			}
 		}
-
-		return result;
 	}
 
 	public void addStudent(Student student) throws TooManyStudentsStudentGroupException {
+		if (student == null) {
+			throw new IllegalArgumentException("student is null");
+		}
+
 		if (studentsCount >= GROUPSIZE) {
 			throw new TooManyStudentsStudentGroupException();
 		} else {
@@ -56,14 +54,6 @@ public class Group {
 		}
 	}
 
-	public void clearGroup() {
-		for (int i = 0; i < students.length; i++) {
-			students[i] = null;
-		}
-
-		studentsCount = 0;
-	}
-
 	private void consolidateArray() {
 		int cnt2 = 0;
 		for (int i = 0; i < students.length; i++) {
@@ -76,6 +66,27 @@ public class Group {
 		while (cnt2 < students.length) {
 			students[cnt2++] = null;
 		}
+	}
+
+	public void clearGroup() {
+		for (int i = 0; i < students.length; i++) {
+			students[i] = null;
+		}
+
+		studentsCount = 0;
+	}
+
+	public Student[] findStudentBySurname(String surname) {
+		Student[] result = new Student[0];
+
+		for (int i = 0; i < studentsCount; i++) {
+			if (surname.equals(students[i].getSurname())) {
+				result = Arrays.copyOf(result, result.length + 1);
+				System.arraycopy(new Student[] { students[i] }, 0, result, result.length - 1, 1);
+			}
+		}
+
+		return result;
 	}
 
 	private Student[] sortArray(Student[] array) {
@@ -101,7 +112,7 @@ public class Group {
 		int index = 0;
 		for (int i = 1; i < array.length; i++) {
 			if ((array[i]) != null) {
-				if ((result == null) || (compareStrings(array[i].getSurname(), result.getSurname()) <= 0)) {
+				if ((result == null) || (array[i].getSurname().compareTo(result.getSurname()) <= 0)) {
 					result = array[i];
 					index = i;
 				}
@@ -112,29 +123,8 @@ public class Group {
 		return result;
 	}
 
-	private int compareStrings(String str1, String str2) {
-		int result = 0;
-		int minLength = (str1.length() < str2.length()) ? (str1.length()) : (str2.length());
-		str1 = str1.toLowerCase();
-		str2 = str2.toLowerCase();
-
-		for (int i = 0; i < minLength; i++) {
-			if (str1.charAt(i) < str2.charAt(i)) {
-				result = -1;
-				break;
-			} else if (str1.charAt(i) > str2.charAt(i)) {
-				result = 1;
-				break;
-			}
-		}
-
-		if ((result == 0) && (str1.length() > str2.length())) {
-			result = 1;
-		} else if ((result == 0) && (str1.length() < str2.length())) {
-			result = -1;
-		}
-
-		return result;
+	public int getStudentsCount() {
+		return studentsCount;
 	}
 
 	@Override
