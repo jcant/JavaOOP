@@ -156,7 +156,7 @@ public class Group implements Voenkom {
 		return result;
 	}
 
-	public void sortGroup(Student.SortBy field) {
+	public void sortGroup(SortBy field) {
 		Student.setSortArrayBy(field);
 		Arrays.sort(students);
 	}

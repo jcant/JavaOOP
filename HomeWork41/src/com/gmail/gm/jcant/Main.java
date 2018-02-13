@@ -2,8 +2,6 @@ package com.gmail.gm.jcant;
 
 import java.util.Date;
 
-import com.gmail.gm.jcant.Student.SortBy;
-
 public class Main {
 
 	public static void main(String[] args) {
@@ -61,7 +59,7 @@ public class Main {
 		System.out.println(group);
 		System.out.println("Sort by AverageScore(desc):");
 		group.sortGroup(SortBy.AVGSCORE.setAscending(false));
-		System.out.println(group);
+		System.out.println(group); 
 	}
 
 	public static Student getStudent() {

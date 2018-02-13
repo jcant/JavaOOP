@@ -18,7 +18,6 @@ public class Student extends Human implements Comparable {
 			String institutionName, Date dateIn, double avarageScore) {
 		super(name, surname, birthday, male, weight, height);
 		this.institutionName = institutionName;
-		// this.courseNum = courseNum;
 		this.dateIn = new JDate(dateIn);
 		this.averageScore = avarageScore;
 	}
@@ -67,58 +66,11 @@ public class Student extends Human implements Comparable {
 	@Override
 	public int compareTo(Object o) {
 		Student otherStudent = (Student) o;
-		int result = 0;
 
-		if (sortArrayBy == SortBy.NAME) {
-			result = this.getName().compareTo(otherStudent.getName());
-		} else if (sortArrayBy == SortBy.SURNAME) {
-			result = this.getSurname().compareTo(otherStudent.getSurname());
-		} else if (sortArrayBy == SortBy.INSTITUTE) {
-			result = this.getInstitutionName().compareTo(otherStudent.getInstitutionName());
-		} else if (sortArrayBy == SortBy.AGE) {
-			result = this.getAge() - otherStudent.getAge();
-		} else if (sortArrayBy == SortBy.COURSE) {
-			result = this.getCourse() - otherStudent.getCourse();
-		} else if (sortArrayBy == SortBy.WEIGHT) {
-			result = (int) ((this.getWeight() - otherStudent.getWeight())
-					/ Math.abs(this.getWeight() - otherStudent.getWeight()));
-		} else if (sortArrayBy == SortBy.HEIGHT) {
-			result = (int) ((this.getHeight() - otherStudent.getHeight())
-					/ Math.abs(this.getHeight() - otherStudent.getHeight()));
-		} else if (sortArrayBy == SortBy.AVGSCORE) {
-			result = (int) ((this.getAvarageScore() - otherStudent.getAvarageScore())
-					/ Math.abs(this.getAvarageScore() - otherStudent.getAvarageScore()));
-		}
-
-		if (!sortArrayBy.isAscending()) {
-			result *= -1;
-		}
-
-		return result;
-	}
-
-	public enum SortBy {
-		NAME(true), SURNAME(true), AGE(true), WEIGHT(true), HEIGHT(true), INSTITUTE(true), COURSE(true), AVGSCORE(true);
-
-		private boolean ascending;
-
-		private SortBy(boolean ascending) {
-			this.ascending = ascending;
-		}
-
-		public boolean isAscending() {
-			return ascending;
-		}
-
-		public SortBy setAscending(boolean ascending) {
-			this.ascending = ascending;
-			return this;
-		}
-
+		return sortArrayBy.compare(this, otherStudent);
 	}
 
 	public static void setSortArrayBy(SortBy sort) {
 		sortArrayBy = sort;
 	}
-
 }
