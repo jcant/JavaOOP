@@ -2,33 +2,38 @@ package com.gmail.gm.jcant;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class Main {
 
 	public static void main(String[] args) {
 
-//		File from = new File("/home/jcant/JC/Graphics");
-//		File to = new File("/home/jcant/TMP/222");
-//
-//		try {
-//			FileUtils.copy(from, to);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		File from = new File("/home/jcant/JC/Graphics/моя");
+		File to = new File("/home/jcant/TMP/222");
 
-//		File delFile = new File("/home/jcant/TMP/222");
-//		try {
-//			FileUtils.delete(delFile);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-		//get size:
-		File file = new File("/home/jcant/JC/Graphics");
-		System.out.println("Size of "+file+ " is "+ FileUtils.getSize(file)+" bytes");
+		System.out.println("Copying png,jpg,bmp,ico files from " + from + " to " + to);
+
+		try {
+			FileUtils.copy(from, to, new MyFileFilter("png", "jpg", "bmp", "ico"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		File delFile = new File("/home/jcant/TMP/222");
+		System.out.println("Full size of " + delFile + " is " + FileUtils.getSize(delFile) + " bytes");
+		System.out.println(
+				"ICO files in " + delFile + " is " + FileUtils.getSize(delFile, new MyFileFilter("ico")) + " bytes");
+
+		System.out.println("Deleting ICO files in " + delFile);
+
+		try {
+			FileUtils.delete(delFile, new MyFileFilter("ico"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Full size of " + delFile + "after delete ICO is " + FileUtils.getSize(delFile) + " bytes");
+		System.out.println(
+				"ICO files in " + delFile + " is " + FileUtils.getSize(delFile, new MyFileFilter("ico")) + " bytes");
 
 	}
 

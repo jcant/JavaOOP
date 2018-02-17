@@ -1,6 +1,7 @@
 package com.gmail.gm.jcant;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,6 +10,10 @@ import java.util.Date;
 public class FileUtils {
 
 	public static void copy(File from, File to) throws IOException {
+		copy(from, to, f -> true);
+	}
+
+	public static void copy(File from, File to, FileFilter ff) throws IOException {
 
 		Date start = new Date();
 
@@ -24,60 +29,67 @@ public class FileUtils {
 				path.mkdirs();
 
 				try {
-					fileCopy(f, new File(to, f.getAbsolutePath().substring(from.getAbsolutePath().length(),
-							f.getAbsolutePath().length())));
+
+					fileCopy(f, fileTo);
+
 				} catch (IOException e) {
 
 					e.printStackTrace();
 				}
 			}
-		});
-
-		System.out.println("100%");
+		}, ff);
 
 		Date end = new Date();
 
-		System.out.println("Time in msec: " + (end.getTime() - start.getTime()));
+		System.out.println("Copying files end. Time in msec: " + (end.getTime() - start.getTime()));
 	}
 
 	public static void delete(File file) throws IOException {
+		delete(file, f -> true);
+	}
+
+	public static void delete(File file, FileFilter ff) throws IOException {
 
 		Date start = new Date();
 
-		fileSearch(file, f -> f.delete());
+		fileSearch(file, f -> f.delete(), ff);
 
 		Date end = new Date();
 
-		System.out.println("Time in msec: " + (end.getTime() - start.getTime()));
+		System.out.println("Deleting files end. Time in msec: " + (end.getTime() - start.getTime()));
 	}
 
 	public static long getSize(File file) {
+		return getSize(file, f -> true);
+	}
+
+	public static long getSize(File file, FileFilter ff) {
 		long[] result = new long[1];
 
 		fileSearch(file, f -> {
 			if (f.isFile()) {
 				result[0] = result[0] + f.length();
 			}
-		});
+		}, ff);
 		return result[0];
 	}
 
-	
-	//recursion method to run through all files and directories
-	private static void fileSearch(File startPoint, FileOperation fo) {
+	// recursion method to run through all files and directories
+	private static void fileSearch(File startPoint, FileOperation fo, FileFilter ff) {
 
 		if (startPoint.isFile()) {
 
+			// printFileInfo(startPoint);
 			fo.fileOperation(startPoint);
 			return;
 
 		} else {
 
-			File[] files = startPoint.listFiles();
+			File[] files = startPoint.listFiles(ff);
 
 			for (File file : files) {
 
-				fileSearch(file, fo);
+				fileSearch(file, fo, ff);
 			}
 
 			fo.fileOperation(startPoint);
@@ -99,13 +111,13 @@ public class FileUtils {
 
 		byte[] buffer = new byte[buffSize];
 		int readByte = 0;
-		long count = 0;
+		// long count = 0;
 		try (FileInputStream fis = new FileInputStream(from); FileOutputStream fos = new FileOutputStream(to)) {
 
 			while ((readByte = fis.read(buffer)) > 0) {
 				fos.write(buffer, 0, readByte);
-				count += readByte;
-				System.out.println("file progress: " + (100 * count / from.length()) + "%");
+				// count += readByte;
+				// System.out.println("file progress: " + (100 * count / from.length()) + "%");
 			}
 
 		} catch (IOException e) {
