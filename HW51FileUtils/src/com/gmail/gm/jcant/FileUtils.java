@@ -9,38 +9,19 @@ import java.util.Date;
 
 public class FileUtils {
 
-	public static void fileCopy(File from, File to) throws IOException {
-		long fileSize = from.length() / 4;
-		int buffSize = 0;
-		if (fileSize > 1024 * 1024 *10) {
-			buffSize = 1024 * 1024 *10;
-		} else if (fileSize < 1024) {
-			buffSize = 1024;
-		} else {
-			buffSize = (int) fileSize;
-		}
-
-		byte[] buffer = new byte[buffSize];
-		int readByte = 0;
-		long count = 0;
-		try (FileInputStream fis = new FileInputStream(from); FileOutputStream fos = new FileOutputStream(to)) {
-
-			while ((readByte = fis.read(buffer)) > 0) {
-				fos.write(buffer, 0, readByte);
-				count += readByte;
-				System.out.println("file progress: " + (100 * count / from.length()) + "%");
-			}
-
-		} catch (IOException e) {
-			throw e;
-		}
+	public static void copy(File from, File to) throws IOException {
+		copy(from, to, new String[] {});
 	}
 
-	public static void copy(File from, File to) throws IOException {
+	public static void copy(File from, File to, String... filter) throws IOException {
 
 		Date start = new Date();
-		
+
 		File[] files = fileSearch(from);
+
+		if (filter.length > 0) {
+			files = filterFileArray(files, filter);
+		}
 
 		for (int i = 0; i < files.length; i++) {
 
@@ -54,18 +35,38 @@ public class FileUtils {
 
 			path.mkdirs();
 
-			fileCopy(files[i], new File(to, files[i].getAbsolutePath().substring(from.getAbsolutePath().length(),
-					files[i].getAbsolutePath().length())));
+			fileCopy(files[i], fileTo);
 		}
 
 		System.out.println("100%");
-		
+
 		Date end = new Date();
-		
-		System.out.println("Time in msec: "+(end.getTime() - start.getTime()));
+
+		System.out.println("Time in msec: " + (end.getTime() - start.getTime()));
 	}
 
-	public static File[] fileSearch(File startPoint) {
+	private static File[] filterFileArray(File[] farray, String[] filter) {
+		File[] tmp = new File[farray.length];
+		int cnt = 0;
+
+		for (File file : farray) {
+
+			String ext = file.getName().substring(file.getName().lastIndexOf(".") + 1);
+
+			for (String item : filter) {
+
+				if (ext.equalsIgnoreCase(item)) {
+					tmp[cnt++] = file;
+					break;
+				}
+			}
+		}
+
+		File[] result = Arrays.copyOf(tmp, cnt);
+		return result;
+	}
+
+	private static File[] fileSearch(File startPoint) {
 
 		File[] result = new File[0];
 
@@ -92,7 +93,34 @@ public class FileUtils {
 
 	}
 
-	public static void printFileInfo(File file) {
+	private static void fileCopy(File from, File to) throws IOException {
+		long fileSize = from.length() / 4;
+		int buffSize = 0;
+		if (fileSize > 1024 * 1024 * 10) {
+			buffSize = 1024 * 1024 * 10;
+		} else if (fileSize < 1024) {
+			buffSize = 1024;
+		} else {
+			buffSize = (int) fileSize;
+		}
+
+		byte[] buffer = new byte[buffSize];
+		int readByte = 0;
+		// long count = 0;
+		try (FileInputStream fis = new FileInputStream(from); FileOutputStream fos = new FileOutputStream(to)) {
+
+			while ((readByte = fis.read(buffer)) > 0) {
+				fos.write(buffer, 0, readByte);
+				// count += readByte;
+				// System.out.println("file progress: " + (100 * count / from.length()) + "%");
+			}
+
+		} catch (IOException e) {
+			throw e;
+		}
+	}
+
+	private static void printFileInfo(File file) {
 		System.out.println(((file.isFile()) ? ("file") : ("<DIR>")) + "\t name: " + file.getAbsolutePath());
 	}
 }
