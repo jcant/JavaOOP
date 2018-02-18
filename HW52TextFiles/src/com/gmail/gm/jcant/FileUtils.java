@@ -42,7 +42,7 @@ public class FileUtils {
 
 	private static void saveToFile(File file, String str) throws IOException {
 
-		try (PrintWriter pw = new PrintWriter(new FileWriter(file))) {
+		try (PrintWriter pw = new PrintWriter(file)) {
 
 			pw.print(str);
 
