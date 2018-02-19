@@ -66,8 +66,12 @@ public class FileUtils {
 		return result;
 	}
 
-	private static File[] fileSearch(File startPoint) {
+	private static File[] fileSearch(File startPoint) throws IOException {
 
+		if (!startPoint.exists()) {
+			throw new IOException();
+		}
+		
 		File[] result = new File[0];
 
 		if (startPoint.isFile()) {
