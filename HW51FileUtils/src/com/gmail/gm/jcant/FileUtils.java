@@ -59,11 +59,11 @@ public class FileUtils {
 		System.out.println("Deleting files end. Time in msec: " + (end.getTime() - start.getTime()));
 	}
 
-	public static long getSize(File file) {
+	public static long getSize(File file) throws IOException {
 		return getSize(file, f -> true);
 	}
 
-	public static long getSize(File file, FileFilter ff) {
+	public static long getSize(File file, FileFilter ff) throws IOException {
 		long[] result = new long[1];
 
 		fileSearch(file, f -> {
@@ -75,7 +75,11 @@ public class FileUtils {
 	}
 
 	// recursion method to run through all files and directories
-	private static void fileSearch(File startPoint, FileOperation fo, FileFilter ff) {
+	private static void fileSearch(File startPoint, FileOperation fo, FileFilter ff) throws IOException {
+
+		if (!startPoint.exists()) {
+			throw new IOException();
+		}
 
 		if (startPoint.isFile()) {
 
