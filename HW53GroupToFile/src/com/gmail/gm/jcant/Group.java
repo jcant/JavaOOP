@@ -217,7 +217,7 @@ public class Group implements Voenkom, ObjectToDAO, DAOToObject {
 
 	// DAOToObject
 	@Override
-	public void unifyToObject(DataUnificator[] data) {
+	public void unifyToObject(DataUnificator[] data) throws IllegalArgumentException {
 
 		clearGroup();
 		for (DataUnificator du : data) {
@@ -226,7 +226,7 @@ public class Group implements Voenkom, ObjectToDAO, DAOToObject {
 				st.unifyToObject(du.getUData());
 				this.addStudent(st);
 			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
+				throw e;
 			}
 
 		}

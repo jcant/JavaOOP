@@ -109,7 +109,7 @@ public class JDate {
 		}
 		return result;
 	}
-	
+
 	public static String getDate(Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat(defaultFormat);
 		String result = sdf.format(date);
