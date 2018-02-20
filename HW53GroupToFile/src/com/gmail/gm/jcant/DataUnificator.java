@@ -47,7 +47,7 @@ public class DataUnificator {
 	public void setData(String data) {
 		this.data = data;
 	}
-	
+
 	public DataUnificator[] getUData() {
 		return uData;
 	}

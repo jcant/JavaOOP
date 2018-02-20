@@ -7,36 +7,47 @@ import java.util.Date;
 public class Main {
 
 	public static void main(String[] args) {
-		
+
 		Group gr2 = new Group();
 
 		for (int i = 0; i < 8; i++) {
 			gr2.addStudent(getStudent());
 		}
-		
+
 		System.out.println(gr2);
-		
+
+		File groupFile = new File("/home/jcant/TMP/gr2.csv");
+
+		try {
+			DAOController.saveObject(gr2, FormatCSV::getFormatData, groupFile);
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+		System.out.println("---------------------------------------");
+
 		Group gr3 = new Group();
-		
-		DataUnificator[] df = gr2.objectUnify();
-		
-		gr3.unifyToObject(df);
-		
-		System.out.println("----------------------------");
+
+		try {
+			DAOController.loadObject(gr3, FormatCSV::getUData, groupFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		System.out.println(gr3);
-		
-//		File groupFile = new File("/home/jcant/TMP/gr2.csv");
-//		
-//		try {
-//			DAOController.saveObject(gr2, FormatCSV::getFormatData, groupFile);
-//			
-//		} catch (IOException e) {
-//	
-//			e.printStackTrace();
-//		}
-		
+
 	}
 
+	public static void printUData(DataUnificator[] data) {
+		for (DataUnificator dItem : data) {
+			System.out.println(dItem);
+			for (DataUnificator du : dItem.getUData()) {
+				System.out.println("\t" + du);
+			}
+		}
+	}
 
 	public static Student getStudent() {
 		Student result = new Student();

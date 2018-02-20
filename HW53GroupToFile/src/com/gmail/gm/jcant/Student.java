@@ -85,27 +85,27 @@ public class Student extends Human implements ObjectToDAO, DAOToObject {
 	}
 
 	@Override
-	public void unifyToObject(DataUnificator[] data) throws IllegalArgumentException{
+	public void unifyToObject(DataUnificator[] data) throws IllegalArgumentException {
 		for (DataUnificator item : data) {
 			if (item.getName().equals("name") && item.getType() == DataUnificator.STRING) {
 				this.setName(item.getData());
 			} else if (item.getName().equals("surname") && item.getType() == DataUnificator.STRING) {
 				this.setSurname(item.getData());
-			}else if (item.getName().equals("birthday") && item.getType() == DataUnificator.DATE) {
+			} else if (item.getName().equals("birthday") && item.getType() == DataUnificator.DATE) {
 				this.setBirthday(JDate.getDate(item.getData()));
-			}else if (item.getName().equals("male") && item.getType() == DataUnificator.BOOLEAN) {
+			} else if (item.getName().equals("male") && item.getType() == DataUnificator.BOOLEAN) {
 				this.setMale(item.getData().equals("true") ? (true) : false);
-			}else if (item.getName().equals("weight") && item.getType() == DataUnificator.DOUBLE) {
+			} else if (item.getName().equals("weight") && item.getType() == DataUnificator.DOUBLE) {
 				this.setWeight(Double.parseDouble(item.getData()));
-			}else if (item.getName().equals("height") && item.getType() == DataUnificator.DOUBLE) {
+			} else if (item.getName().equals("height") && item.getType() == DataUnificator.DOUBLE) {
 				this.setHeight(Double.parseDouble(item.getData()));
-			}else if (item.getName().equals("institutionName") && item.getType() == DataUnificator.STRING) {
+			} else if (item.getName().equals("institutionName") && item.getType() == DataUnificator.STRING) {
 				this.setInstitutionName(item.getData());
-			}else if (item.getName().equals("dateIn") && item.getType() == DataUnificator.DATE) {
+			} else if (item.getName().equals("dateIn") && item.getType() == DataUnificator.DATE) {
 				this.setDateIn(JDate.getDate(item.getData()));
-			}else if (item.getName().equals("averageScore") && item.getType() == DataUnificator.DOUBLE) {
+			} else if (item.getName().equals("averageScore") && item.getType() == DataUnificator.DOUBLE) {
 				this.setAvarageScore(Double.parseDouble(item.getData()));
-			}else {
+			} else {
 				throw new IllegalArgumentException();
 			}
 		}
