@@ -32,13 +32,21 @@ public class Main {
 		}
 
 		System.out.println(gr3);
-		
-		
 
-//System.out.println("-123".matches("-?\\d+"));       // да
-//System.out.println("123".matches("-?\\d+"));        // да
-//System.out.println("+123".matches("-?\\d+"));       // нет
-//System.out.println("+123".matches("(-|\\+)?\\d+")); // да
+		// System.out.println("-123".matches("-?\\d+")); // да
+		// System.out.println("123".matches("-?\\d+")); // да
+		// System.out.println("+123".matches("-?\\d+")); // нет
+		// System.out.println("+123".matches("(-|\\+)?\\d+")); // да
+
+	}
+
+	public static void printUData(DataUnificator[] data) {
+		for (DataUnificator dItem : data) {
+			System.out.println(dItem);
+			for (DataUnificator du : dItem.getUData()) {
+				System.out.println("\t" + du);
+			}
+		}
 
 	}
 
