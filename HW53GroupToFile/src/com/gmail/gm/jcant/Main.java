@@ -3,65 +3,75 @@ package com.gmail.gm.jcant;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main {
 
 	public static void main(String[] args) {
 
-		// Group gr2 = new Group();
-		// for (int i = 0; i < 8; i++) {
-		// gr2.addStudent(getStudent());
-		// }
-		//
-		// System.out.println(gr2);
-		//
-		// File groupFile = new File("/home/jcant/TMP/gr3.csv");
-		// try {
-		// DAOController.saveObject(gr2, FormatJSON::getFormatData, groupFile);
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
+		System.out.println("-----  Testing CSV  -----");
+		testCSV();
 
-		// System.out.println("---------------------------------------");
-		//
-		// Group gr3 = new Group();
-		// try {
-		// DAOController.loadObject(gr3, FormatCSV::getUData, groupFile);
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		//
-		// System.out.println(gr3);
-
-		Pattern p = Pattern.compile("(\\{.*(\\{.*\\}+).*\\})");
-		Matcher m = p.matcher("{{1qqqq1 1wwww1} {1eeee1 1rrrr1}} {{1tttt1 1yyyy1} {2qqqq2 2wwww2}} {{2eeee2 2rrrr2} {2tttt2 2yyyy2}}");
-		System.out.println("Start finding...");
-		System.out.println();
-		while(m.find()) {
-			System.out.println(m.group());
-		}
-		System.out.println();
-		System.out.println("end finding");
-		
+		System.out.println("-----  Testing JSON  -----");
+		testJSON();
 
 	}
 
-	public static boolean test(String testString) {
-		Pattern p = Pattern.compile("^(25[0-5])\\.");
-		Matcher m = p.matcher(testString);
-		return m.matches();
-	}
-
-	public static void printUData(DataUnificator[] data) {
-		for (DataUnificator dItem : data) {
-			System.out.println(dItem);
-			for (DataUnificator du : dItem.getUData()) {
-				System.out.println("\t" + du);
-			}
+	public static void testCSV() {
+		// save to CSV
+		Group gr2 = new Group();
+		for (int i = 0; i < 8; i++) {
+			gr2.addStudent(getStudent());
 		}
 
+		System.out.println(gr2);
+
+		File groupFile = new File("/home/jcant/TMP/gr2.csv");
+		try {
+			DAOController.saveObject(gr2, FormatCSV::getFormatData, groupFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// load from CSV
+		System.out.println("---------------------------------------");
+
+		Group gr3 = new Group();
+		try {
+			DAOController.loadObject(gr3, FormatCSV::getUData, groupFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println(gr3);
+	}
+
+	public static void testJSON() {
+		// save to CSV
+		Group gr2 = new Group();
+		for (int i = 0; i < 8; i++) {
+			gr2.addStudent(getStudent());
+		}
+
+		System.out.println(gr2);
+
+		File groupFile = new File("/home/jcant/TMP/gr2.json");
+		try {
+			DAOController.saveObject(gr2, FormatJSON::getFormatData, groupFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// load from CSV
+		System.out.println("---------------------------------------");
+
+		Group gr3 = new Group();
+		try {
+			DAOController.loadObject(gr3, FormatJSON::getUData, groupFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println(gr3);
 	}
 
 	public static Student getStudent() {

@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 public class FormatCSV {
 
+	// convert DataUnificator[] to CSV
 	public static String getFormatData(DataUnificator[] data) {
 		StringBuilder sb = new StringBuilder();
 
@@ -28,6 +29,7 @@ public class FormatCSV {
 		}
 	}
 
+	// convert CSV to DataUnificator[]
 	public static DataUnificator[] getUData(String data) {
 		String[] adata = data.split(System.lineSeparator());
 		DataUnificator[] result = new DataUnificator[0];

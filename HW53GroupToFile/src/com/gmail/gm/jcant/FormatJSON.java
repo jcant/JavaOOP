@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 public class FormatJSON {
 
+	// convert DataUnificator[] to JSON
 	public static String getFormatData(DataUnificator[] data) {
 		StringBuilder sb = new StringBuilder();
 
@@ -23,10 +24,10 @@ public class FormatJSON {
 
 		if (du.getUData() == null) {
 			sb.append("{\"type\":" + du.getType() + ",\"name\":\"" + du.getName() + "\",\"data\":\"" + du.getData()
-					+ "\", \"uData\":null}");
+					+ "\",\"uData\":null}");
 			return sb.toString();
 		} else {
-			sb.append("{\"type\":" + du.getType() + ",\"name\":\"" + du.getName() + "\",\"data\":null, \"uData\":[");
+			sb.append("{\"type\":" + du.getType() + ",\"name\":\"" + du.getName() + "\",\"data\":null,\"uData\":[");
 			for (int i = 0; i < du.getUData().length; i++) {
 				sb.append(getSingleDU(du.getUData()[i]));
 				if (i != du.getUData().length - 1) {
@@ -39,46 +40,78 @@ public class FormatJSON {
 		}
 	}
 
-	public static DataUnificator[] getUData(String data) {
-		String[] adata = data.split(System.lineSeparator());
+	// convert JSON to DataUnificator[]
+	public static DataUnificator[] getUData(String string) {
 		DataUnificator[] result = new DataUnificator[0];
-		DataUnificator[] current = null;
-		DataUnificator dItem = null;
-		DataUnificator dItem2 = null;
-
-		for (String line : adata) {
-
-			if (line.length() == 0) {
-				continue;
-			}
-
-			String[] items = line.split(",");
-			int itemType = Integer.parseInt(items[0]);
-			String itemName = items[1];
-
-			if (itemType == DataUnificator.OBJECT) {
-
-				if (dItem != null) {
-					result = addToArray(result, dItem);
+		string = string.substring(1, string.length() - 2); // remove '[' and ']'
+		String[] adata = findBrackets(string, '{', '}');
+		for (String element : adata) {
+			DataUnificator du = new DataUnificator();
+			String[] arrElement = element.split("\\[");
+			String[] items = arrElement[0].split(",");
+			for (String item : items) {
+				item = item.replaceAll("\"", "");
+				String[] sub = item.split(":");
+				if (sub[0].equals("type")) {
+					du.setType(Integer.parseInt(sub[1]));
 				}
-
-				current = new DataUnificator[0];
-				dItem = new DataUnificator(itemName, current, itemType);
-			} else {
-				String itemData = items[2];
-				dItem2 = new DataUnificator(itemName, itemData, itemType);
-				current = addToArray(current, dItem2);
-				dItem.setUData(current);
+				if (sub[0].equals("name")) {
+					du.setName(sub[1]);
+				}
+				if (sub[0].equals("data")) {
+					if (sub[1].equals("null")) {
+						du.setData(null);
+					} else {
+						du.setData(sub[1]);
+					}
+				}
+				if (sub[0].equals("uData")) {
+					if (sub.length == 2) {
+						du.setUData(null);
+					} else {
+						du.setUData(getUData("[" + arrElement[1]));
+					}
+				}
 			}
+			result = addToArray(result, du);
 		}
-
-		result = addToArray(result, dItem);
 		return result;
 	}
 
-	private static DataUnificator[] addToArray(DataUnificator[] arr, DataUnificator du) {
-		DataUnificator[] result = Arrays.copyOf(arr, arr.length + 1);
-		result[arr.length] = du;
+	private static String[] findBrackets(String string, char... brackets) {
+		String[] result = new String[0];
+		boolean findOpen = false;
+		int start = 0;
+		int end = string.length() - 1;
+		int level = 0;
+
+		for (int i = 0; i < string.length(); i++) {
+			if ((!findOpen) && (string.charAt(i) == brackets[0])) {
+				findOpen = true;
+				start = i;
+			} else if ((findOpen) && (level == 0) && (string.charAt(i) == brackets[1])) {
+				end = i;
+				result = addToArray(result, string.substring(start + 1, end));
+				findOpen = false;
+			} else if ((findOpen) && (string.charAt(i) == brackets[0])) {
+				level++;
+			} else if ((findOpen) && (level > 0) && (string.charAt(i) == brackets[1])) {
+				level--;
+			}
+		}
+
+		return result;
+	}
+
+	private static DataUnificator[] addToArray(DataUnificator[] array, DataUnificator item) {
+		DataUnificator[] result = Arrays.copyOf(array, array.length + 1);
+		result[array.length] = item;
+		return result;
+	}
+
+	private static String[] addToArray(String[] array, String item) {
+		String[] result = Arrays.copyOf(array, array.length + 1);
+		result[array.length] = item;
 		return result;
 	}
 

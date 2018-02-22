@@ -26,7 +26,6 @@ public class Student extends Human implements ObjectToDAO, DAOToObject {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-
 		sb.append(String.format("%-8.8s %-10.10s", getName(), getSurname() + ","));
 		sb.append(String.format("  %-8.8s", ((isMale()) ? ("man") : ("woman") + ",")));
 		sb.append(String.format("Age: %-6.6s", getAge() + ","));
