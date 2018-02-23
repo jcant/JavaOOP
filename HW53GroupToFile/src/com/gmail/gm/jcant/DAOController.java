@@ -12,7 +12,7 @@ public class DAOController {
 		super();
 	}
 
-	public static void saveObject(ObjectToDAO object, DAOToFormat formater, File file) throws IOException {
+	public static void saveObject(ObjectToDU object, DUToFormat formater, File file) throws IOException {
 
 		String formatedData = formater.getFormatData(object.objectUnify());
 
@@ -25,7 +25,7 @@ public class DAOController {
 		}
 	}
 
-	public static void loadObject(DAOToObject object, FormatToDAO formater, File file) throws IOException {
+	public static void loadObject(DUToObject object, FormatToDU formater, File file) throws IOException {
 
 		StringBuilder sb = new StringBuilder();
 

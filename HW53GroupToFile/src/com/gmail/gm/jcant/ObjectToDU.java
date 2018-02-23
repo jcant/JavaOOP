@@ -1,6 +1,6 @@
 package com.gmail.gm.jcant;
 
-public interface ObjectToDAO {
+public interface ObjectToDU {
 
 	public DataUnificator[] objectUnify();
 

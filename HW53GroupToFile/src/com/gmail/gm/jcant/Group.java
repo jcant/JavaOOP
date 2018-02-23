@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Group implements Voenkom, ObjectToDAO, DAOToObject {
+public class Group implements Voenkom, ObjectToDU, DUToObject {
 
 	private final int GROUPSIZE = 10;
 	private int studentsCount = 0;

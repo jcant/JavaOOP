@@ -2,7 +2,7 @@ package com.gmail.gm.jcant;
 
 import java.util.Date;
 
-public class Student extends Human implements ObjectToDAO, DAOToObject {
+public class Student extends Human implements ObjectToDU, DUToObject {
 
 	static SortBy sortArrayBy = SortBy.SURNAME;
 
