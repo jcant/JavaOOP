@@ -3,7 +3,6 @@ package com.gmail.gm.jcant;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
@@ -69,26 +68,8 @@ public class FileUtils {
 	}
 
 	private static String removePunctuation(StringBuilder sb) {
-		String[] pucts = new String[] { ".", ",", ":", ";", "!", "?", "\"", "(", ")", "'", "{", "}" };
-		StringBuilder result = new StringBuilder();
 
-		for (int i = 0; i < sb.length(); i++) {
-			boolean flag = true;
-			for (String sign : pucts) {
-				if (sign.charAt(0) == sb.charAt(i)) {
-					flag = false;
-					break;
-				}
-			}
-
-			if (flag) {
-				result.append(sb.charAt(i));
-			} else {
-				result.append(" ");
-			}
-		}
-
-		return result.toString().replaceAll("\\s+", " ");
+		return sb.toString().replaceAll("[.|,|:|;|!|?|\"|\\(|\\)|'|\\{|\\}|\\s+]", " ").replaceAll("\\s+", " ");
 
 	}
 }
