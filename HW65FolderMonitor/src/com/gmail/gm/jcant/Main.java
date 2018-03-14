@@ -6,7 +6,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		File f1 = new File("/home/tmp/111/");
+		File f1 = new File("/home/jcant/tmp/111/");
 		
 		Thread monitor = new Thread(new FolderMonitor(f1));
 		

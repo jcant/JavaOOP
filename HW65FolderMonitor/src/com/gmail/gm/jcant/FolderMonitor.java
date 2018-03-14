@@ -56,13 +56,17 @@ public class FolderMonitor implements Runnable {
 
 		if (!oldList.isEmpty()) {
 			for (File file : oldList) {
-				System.out.println("Deleted file: " + file);
+				System.out.println("Deleted: " + file);
 			}
 		}
 
 		if (!newList.isEmpty()) {
 			for (File file : newList) {
-				System.out.println("New file: " + file);
+				if (file.isFile()) {
+					System.out.println("New file: " + file);
+				} else {
+					System.out.println("New folder: " + file);
+				}
 			}
 		}
 	}
@@ -72,7 +76,7 @@ public class FolderMonitor implements Runnable {
 		Thread th = Thread.currentThread();
 
 		while (!th.isInterrupted()) {
-			
+
 			compare();
 
 			try {
