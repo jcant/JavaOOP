@@ -1,13 +1,11 @@
 package com.gmail.gm.jcant;
 
-import java.text.ParseException;
 import java.util.Arrays;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 public class Group implements Voenkom {
 
 	private final int GROUPSIZE = 10;
+	private String groupName;
 	private int studentsCount = 0;
 	private Student[] students;
 
@@ -21,6 +19,9 @@ public class Group implements Voenkom {
 	}
 
 	private final void initGroupArray(Student[] students) {
+		if (students == null) {
+			throw new IllegalArgumentException("students array is null. Cant't init");
+		}
 
 		if (students.length > GROUPSIZE) {
 			throw new IndexOutOfBoundsException("Too big init array!");
@@ -41,74 +42,6 @@ public class Group implements Voenkom {
 		} else {
 			students[studentsCount++] = student;
 		}
-	}
-
-	public void interactiveAddStudent() {
-
-		try {
-			String name = getStringFromScanner("Name:");
-			String surname = getStringFromScanner("Surname:");
-			JDate birthday = getJDateFromScanner("Birthday(dd-mm-yyyy):");
-			boolean male = getMaleFromScanner();
-			double weight = getDoubleFromScanner("Weight:");
-			double height = getDoubleFromScanner("Height:");
-			String instName = getStringFromScanner("Institute name:");
-			JDate dateIn = getJDateFromScanner("Institute date entered(dd-mm-yyyy):");
-			double averageScore = getDoubleFromScanner("Average score:");
-
-			addStudent(new Student(name, surname, birthday.getDate(), male, weight, height, instName, dateIn.getDate(),
-					averageScore));
-		} catch (InputMismatchException e) {
-			System.err.println("wrong 'double' value! (" + e.getMessage() + ")");
-		} catch (ParseException e) {
-			System.err.println("wrong 'date' value! (" + e.getMessage() + ")");
-		} catch (IllegalArgumentException e) {
-			System.err.println("wrong value! (" + e.getMessage() + ")");
-		}
-	}
-
-	private String getStringFromScanner(String message) throws IllegalArgumentException {
-		String result = "";
-		Scanner sc = new Scanner(System.in);
-		System.out.println(message);
-		result = sc.nextLine();
-		if (result.equals("")) {
-			throw new IllegalArgumentException("empty string argument");
-		}
-
-		return result;
-	}
-
-	private JDate getJDateFromScanner(String message) throws ParseException {
-		JDate result = null;
-		Scanner sc = new Scanner(System.in);
-		System.out.println(message);
-		result = new JDate(sc.nextLine(), "dd-MM-yyyy");
-		return result;
-	}
-
-	private boolean getMaleFromScanner() throws IllegalArgumentException {
-		boolean result = false;
-		String input = "";
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Is student a man? (yes/no):");
-		input = sc.nextLine().toLowerCase();
-		if (input.equals("yes")) {
-			result = true;
-		} else if (input.equals("no")) {
-			result = false;
-		} else {
-			throw new IllegalArgumentException("wrong 'yes/no' answer");
-		}
-		return result;
-	}
-
-	private double getDoubleFromScanner(String message) throws InputMismatchException {
-		Scanner sc = new Scanner(System.in);
-		double result;
-		System.out.println(message);
-		result = sc.nextDouble();
-		return result;
 	}
 
 	public void deleteStudent(int studentNumber) {
@@ -144,6 +77,10 @@ public class Group implements Voenkom {
 	}
 
 	public Student[] findStudentBySurname(String surname) {
+		if (surname == null) {
+			throw new IllegalArgumentException("Surname is null");
+		}
+
 		Student[] result = new Student[0];
 
 		for (int i = 0; i < studentsCount; i++) {
@@ -161,8 +98,24 @@ public class Group implements Voenkom {
 		Arrays.sort(students, (s1, s2) -> Student.sortArrayBy.compare(s1, s2));
 	}
 
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
 	public int getStudentsCount() {
 		return studentsCount;
+	}
+
+	private void setStudentsCount(int studentsCount) {
+		this.studentsCount = studentsCount;
+	}
+
+	private void setStudents(Student[] students) {
+		this.students = students.clone();
 	}
 
 	public Student[] getStudentsArray() {
@@ -171,6 +124,14 @@ public class Group implements Voenkom {
 			result[i] = students[i];
 		}
 		return result;
+	}
+
+	public Student getStudent(int number) {
+		if ((number < 0) || (number >= studentsCount)) {
+			throw new IndexOutOfBoundsException();
+		}
+
+		return students[number];
 	}
 
 	@Override
@@ -200,6 +161,78 @@ public class Group implements Voenkom {
 		}
 
 		return tmp.getStudentsArray();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + GROUPSIZE;
+		result = prime * result + ((groupName == null) ? 0 : groupName.hashCode());
+		result = prime * result + Arrays.hashCode(students);
+		result = prime * result + studentsCount;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+
+		Group other = (Group) obj;
+
+		if (GROUPSIZE != other.GROUPSIZE) {
+			return false;
+		}
+
+		if (groupName == null) {
+			if (other.groupName != null) {
+				return false;
+			}
+		} else if (!groupName.equals(other.groupName)) {
+			return false;
+		}
+
+		if (!Arrays.equals(students, other.students)) {
+			return false;
+		}
+
+		if (studentsCount != other.studentsCount) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	protected Group clone() {
+
+		Group result = new Group();
+
+		if (groupName != null) {
+			result.setGroupName(new String(groupName));
+		}
+
+		result.setStudentsCount(studentsCount);
+
+		if (students != null) {
+			Student[] newArray = new Student[students.length];
+			for (int i = 0; i < students.length; i++) {
+				if (students[i] != null) {
+					newArray[i] = students[i].clone();
+				}
+			}
+			result.setStudents(newArray);
+		}
+
+		return result;
 	}
 
 }

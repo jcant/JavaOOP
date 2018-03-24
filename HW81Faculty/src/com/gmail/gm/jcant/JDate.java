@@ -80,19 +80,19 @@ public class JDate {
 		return sdf.format(date);
 	}
 
-	public int getDifferenceYears(Date date) {
-		Calendar day = Calendar.getInstance();
-		day.setTime(date);
-
-		int diff = day.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
-		day.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
-
-		if (calendar.compareTo(day) >= 0) {
-			diff--;
-		}
-
-		return diff;
-	}
+//	public int getDifferenceYears(Date date) {
+//		Calendar day = Calendar.getInstance();
+//		day.setTime(date);
+//
+//		int diff = day.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
+//		day.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
+//
+//		if (calendar.compareTo(day) >= 0) {
+//			diff--;
+//		}
+//
+//		return diff;
+//	}
 
 	// --- static ---
 	public static Date getDate(String date) {
@@ -110,6 +110,22 @@ public class JDate {
 		SimpleDateFormat sdf = new SimpleDateFormat(defaultFormat);
 		String result = sdf.format(date);
 		return result;
+	}
+	
+	public static int getDifferenceYears(Date from, Date to) {
+		Calendar dayFrom = Calendar.getInstance();
+		dayFrom.setTime(from);
+		Calendar dayTo = Calendar.getInstance();
+		dayTo.setTime(to);
+
+		int diff = dayTo.get(Calendar.YEAR) - dayFrom.get(Calendar.YEAR);
+		dayTo.set(Calendar.YEAR, dayFrom.get(Calendar.YEAR));
+
+		if (dayFrom.compareTo(dayTo) >= 0) {
+			diff--;
+		}
+
+		return diff;
 	}
 
 	public static void setDefaultFormat(String format) {

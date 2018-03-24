@@ -2,24 +2,24 @@ package com.gmail.gm.jcant;
 
 import java.util.Date;
 
-public class Student extends Human {
+public class Student extends Human implements Cloneable{
 
 	static SortBy sortArrayBy = SortBy.SURNAME;
 
 	private String institutionName;
-	private JDate dateIn;
+	private Date dateIn;
 	private double averageScore;
 
 	public Student() {
 		super();
-		dateIn = new JDate();
+		//dateIn = new JDate();
 	}
 
 	public Student(String name, String surname, Date birthday, boolean male, double weight, double height,
 			String institutionName, Date dateIn, double avarageScore) {
 		super(name, surname, birthday, male, weight, height);
 		this.institutionName = institutionName;
-		this.dateIn = new JDate(dateIn);
+		this.dateIn = dateIn;
 		this.averageScore = avarageScore;
 	}
 
@@ -44,15 +44,19 @@ public class Student extends Human {
 	}
 
 	public int getCourse() {
-		return 1 + dateIn.getDifferenceYears(new Date());
+		if (dateIn != null) {
+			return 1 + JDate.getDifferenceYears(dateIn, new Date());
+		} else {
+			return -1;
+		}
 	}
 
 	public Date getDateIn() {
-		return dateIn.getDate();
+		return dateIn;
 	}
 
 	public void setDateIn(Date dateIn) {
-		this.dateIn.setDate(dateIn);
+		this.dateIn = dateIn;
 	}
 
 	public double getAvarageScore() {
@@ -61,6 +65,87 @@ public class Student extends Human {
 
 	public void setAvarageScore(double avarageScore) {
 		this.averageScore = avarageScore;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		long temp;
+		temp = Double.doubleToLongBits(averageScore);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((dateIn == null) ? 0 : dateIn.hashCode());
+		result = prime * result + ((institutionName == null) ? 0 : institutionName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+
+		Student other = (Student) obj;
+
+		if (Double.doubleToLongBits(averageScore) != Double.doubleToLongBits(other.averageScore)) {
+			return false;
+		}
+
+		if ((dateIn == null)||(other.dateIn == null)) {
+			if ((dateIn != null)||(other.dateIn != null)) {
+				return false;
+			}
+		} else if (!dateIn.equals(other.dateIn)) {
+			return false;
+		}
+
+		if (institutionName == null) {
+			if (other.institutionName != null) {
+				return false;
+			}
+		} else if (!institutionName.equals(other.institutionName)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public Student clone() {
+		Student result = new Student();
+		
+		//from Human:
+		if (getName() != null) {
+			result.setName(new String(getName()));
+		}
+		if (getSurname() != null) {
+			result.setSurname(new String(getSurname()));
+		}
+		if (getBirthday() != null) {
+			result.setBirthday(new Date(getBirthday().getTime()));
+		}
+		result.setMale(isMale());
+		result.setWeight(getWeight());
+		result.setHeight(getHeight());
+		//end from Human
+
+		if (institutionName != null) {
+			result.setInstitutionName(new String(institutionName));
+		}
+
+		if (dateIn != null) {
+			result.dateIn = new Date(dateIn.getTime());
+		}
+
+		result.setAvarageScore(averageScore);
+
+		return result;
 	}
 
 	// -- sorting --
