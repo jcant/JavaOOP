@@ -1,8 +1,11 @@
 package com.gmail.gm.jcant;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class Group implements Voenkom {
+public class Group implements Voenkom, Cloneable, Serializable {
+
+	private static final long serialVersionUID = 3L;
 
 	private final int GROUPSIZE = 10;
 	private String groupName;
@@ -41,6 +44,7 @@ public class Group implements Voenkom {
 			throw new IndexOutOfBoundsException("Too many students - group is full!");
 		} else {
 			students[studentsCount++] = student;
+			student.setGroup(this);
 		}
 	}
 
@@ -134,10 +138,19 @@ public class Group implements Voenkom {
 		return students[number];
 	}
 
+	public double getAverageScore() {
+		double sum = 0;
+		for (int i = 0; i < studentsCount; i++) {
+			sum += students[i].getAvarageScore();
+		}
+
+		return sum / studentsCount;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-
+		sb.append("Group: " + groupName + System.lineSeparator());
 		for (int i = 0; i < students.length; i++) {
 			sb.append(i + ") ");
 			sb.append((students[i] != null) ? (students[i]) : ("NULL"));
@@ -230,9 +243,21 @@ public class Group implements Voenkom {
 				}
 			}
 			result.setStudents(newArray);
+
+			result.setGroupRef();
 		}
 
 		return result;
+	}
+
+	private void setGroupRef() {
+		if (students != null) {
+			for (int i = 0; i < students.length; i++) {
+				if (students[i] != null) {
+					students[i].setGroup(this);
+				}
+			}
+		}
 	}
 
 }

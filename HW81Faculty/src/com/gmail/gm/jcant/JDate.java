@@ -9,90 +9,9 @@ public class JDate {
 
 	private static String defaultFormat = "dd-MM-yyyy";
 
-	private Date date;
-	private Calendar calendar;
-	private String format;
-
-	// --- constructors ---
-	public JDate() {
-		super();
-		calendar = Calendar.getInstance();
+	public static void setDefaultFormat(String format) {
+		defaultFormat = format;
 	}
-
-	public JDate(Date date) {
-		super();
-		calendar = Calendar.getInstance();
-		initDate(date);
-	}
-
-	public JDate(String date, String format) throws ParseException {
-		super();
-		this.format = format;
-		calendar = Calendar.getInstance();
-		initDate(date);
-	}
-
-	private final void initDate(String date) throws ParseException {
-		String currFormat = (format != null) ? (format) : (defaultFormat);
-		SimpleDateFormat sdf = new SimpleDateFormat(currFormat);
-		this.date = sdf.parse(date);
-		calendar.setTime(this.date);
-	}
-
-	private final void initDate(Date date) {
-		this.date = date;
-		calendar.setTime(date);
-	}
-
-	// --- setters getters ---
-	public void setDate(String date) {
-		try {
-			initDate(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void setDate(Date date) {
-		initDate(date);
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public Calendar getCalendar() {
-		return calendar;
-	}
-
-	public void setFormat(String format) {
-		this.format = format;
-	}
-
-	public String getFormat() {
-		return format;
-	}
-
-	@Override
-	public String toString() {
-		String currFormat = (format != null) ? (format) : (defaultFormat);
-		SimpleDateFormat sdf = new SimpleDateFormat(currFormat);
-		return sdf.format(date);
-	}
-
-//	public int getDifferenceYears(Date date) {
-//		Calendar day = Calendar.getInstance();
-//		day.setTime(date);
-//
-//		int diff = day.get(Calendar.YEAR) - calendar.get(Calendar.YEAR);
-//		day.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
-//
-//		if (calendar.compareTo(day) >= 0) {
-//			diff--;
-//		}
-//
-//		return diff;
-//	}
 
 	// --- static ---
 	public static Date getDate(String date) {
@@ -111,7 +30,7 @@ public class JDate {
 		String result = sdf.format(date);
 		return result;
 	}
-	
+
 	public static int getDifferenceYears(Date from, Date to) {
 		Calendar dayFrom = Calendar.getInstance();
 		dayFrom.setTime(from);
@@ -128,8 +47,24 @@ public class JDate {
 		return diff;
 	}
 
-	public static void setDefaultFormat(String format) {
-		defaultFormat = format;
+	public static Date incDay(Date date, int days) {
+		Calendar day = Calendar.getInstance();
+		day.setTime(date);
+		day.add(Calendar.DAY_OF_MONTH, days);
+		return day.getTime();
 	}
 
+	public static Date incMonth(Date date, int months) {
+		Calendar day = Calendar.getInstance();
+		day.setTime(date);
+		day.add(Calendar.MONTH, months);
+		return day.getTime();
+	}
+
+	public static Date incYear(Date date, int years) {
+		Calendar day = Calendar.getInstance();
+		day.setTime(date);
+		day.add(Calendar.YEAR, years);
+		return day.getTime();
+	}
 }

@@ -1,8 +1,11 @@
 package com.gmail.gm.jcant;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Student extends Human implements Cloneable{
+public class Student extends Human implements Cloneable, Serializable {
+
+	private static final long serialVersionUID = 2L;
 
 	static SortBy sortArrayBy = SortBy.SURNAME;
 
@@ -10,9 +13,10 @@ public class Student extends Human implements Cloneable{
 	private Date dateIn;
 	private double averageScore;
 
+	private Group group = null;
+
 	public Student() {
 		super();
-		//dateIn = new JDate();
 	}
 
 	public Student(String name, String surname, Date birthday, boolean male, double weight, double height,
@@ -67,6 +71,14 @@ public class Student extends Human implements Cloneable{
 		this.averageScore = avarageScore;
 	}
 
+	public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -81,46 +93,33 @@ public class Student extends Human implements Cloneable{
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (!super.equals(obj)) {
+		if (!super.equals(obj))
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
-
 		Student other = (Student) obj;
-
-		if (Double.doubleToLongBits(averageScore) != Double.doubleToLongBits(other.averageScore)) {
+		if (Double.doubleToLongBits(averageScore) != Double.doubleToLongBits(other.averageScore))
 			return false;
-		}
-
-		if ((dateIn == null)||(other.dateIn == null)) {
-			if ((dateIn != null)||(other.dateIn != null)) {
+		if (dateIn == null) {
+			if (other.dateIn != null)
 				return false;
-			}
-		} else if (!dateIn.equals(other.dateIn)) {
+		} else if (!dateIn.equals(other.dateIn))
 			return false;
-		}
-
 		if (institutionName == null) {
-			if (other.institutionName != null) {
+			if (other.institutionName != null)
 				return false;
-			}
-		} else if (!institutionName.equals(other.institutionName)) {
+		} else if (!institutionName.equals(other.institutionName))
 			return false;
-		}
-
 		return true;
 	}
 
 	@Override
 	public Student clone() {
 		Student result = new Student();
-		
-		//from Human:
+
+		// from Human:
 		if (getName() != null) {
 			result.setName(new String(getName()));
 		}
@@ -133,7 +132,7 @@ public class Student extends Human implements Cloneable{
 		result.setMale(isMale());
 		result.setWeight(getWeight());
 		result.setHeight(getHeight());
-		//end from Human
+		// end from Human
 
 		if (institutionName != null) {
 			result.setInstitutionName(new String(institutionName));
