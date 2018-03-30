@@ -9,11 +9,14 @@ public class Main {
 		System.out.println("START:");
 		System.out.println(cola);
 
-		//for (int i = 0; i < 5; i++) {
+		for (int i = 1; i <= 10; i++) {
 			cola.processSell(1);
-		//}
-
-		System.out.println("1 step:");
+			System.out.println("step = " + i);
+			System.out.println(cola);
+		}
+		
+		cola.resetQueue();
+		System.out.println("************************");
 		System.out.println(cola);
 
 	}

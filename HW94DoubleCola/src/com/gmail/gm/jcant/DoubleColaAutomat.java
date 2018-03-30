@@ -7,6 +7,7 @@ public class DoubleColaAutomat {
 
 	private Queue<BBTPers> queue = new LinkedList<>();
 	private int givenColas = 0;
+	private BBTPers first = null;
 
 	public DoubleColaAutomat() {
 		super();
@@ -14,6 +15,9 @@ public class DoubleColaAutomat {
 
 	public void addToQueue(BBTPers pers) {
 		queue.add(pers);
+		if (first == null) {
+			first = pers;
+		}
 	}
 
 	public void processSell(int colaNum) {
@@ -28,7 +32,7 @@ public class DoubleColaAutomat {
 			throw new NullPointerException("can't sell() - current person is null");
 		}
 
-		BBTPers clone = current.clone();
+		BBTPers clone = new BBTPers(current.getName(), current.getGeneration()+1);
 		queue.add(current);
 		queue.add(clone);
 		givenColas++;
@@ -45,8 +49,16 @@ public class DoubleColaAutomat {
 				tmp.add(pers);
 			}
 		}
-
+		
 		queue = tmp;
+		
+		rewindTo(first);
+	}
+	
+	private void rewindTo(BBTPers pers) {
+		while(!queue.peek().getName().equals(pers)) {
+			queue.add(queue.poll());
+		}
 	}
 
 	@Override
