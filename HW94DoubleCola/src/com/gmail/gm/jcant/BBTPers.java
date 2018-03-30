@@ -64,7 +64,11 @@ public class BBTPers {
 			return false;
 		return true;
 	}
-	
-	
+
+	@Override
+	protected BBTPers clone() {
+		BBTPers newPers = new BBTPers(this.name, this.generation + 1);
+		return newPers;
+	}
 
 }

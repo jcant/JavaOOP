@@ -32,12 +32,12 @@ public class DoubleColaAutomat {
 			throw new NullPointerException("can't sell() - current person is null");
 		}
 
-		BBTPers clone = new BBTPers(current.getName(), current.getGeneration()+1);
+		BBTPers clone = current.clone();
 		queue.add(current);
 		queue.add(clone);
 		givenColas++;
 	}
-	
+
 	public void resetQueue() {
 		if (queue.isEmpty()) {
 			return;
@@ -49,14 +49,13 @@ public class DoubleColaAutomat {
 				tmp.add(pers);
 			}
 		}
-		
 		queue = tmp;
-		
 		rewindTo(first);
+		givenColas = 0;
 	}
-	
+
 	private void rewindTo(BBTPers pers) {
-		while(!queue.peek().getName().equals(pers)) {
+		while (!queue.peek().equals(pers)) {
 			queue.add(queue.poll());
 		}
 	}
@@ -64,12 +63,11 @@ public class DoubleColaAutomat {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Given Colas: "+ givenColas + System.lineSeparator());
+		sb.append("Given Colas: " + givenColas + System.lineSeparator());
 		for (BBTPers pers : queue) {
 			sb.append(pers + System.lineSeparator());
 		}
 		return sb.toString();
 	}
-	
-	
+
 }

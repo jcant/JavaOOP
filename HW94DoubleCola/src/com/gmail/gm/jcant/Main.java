@@ -14,11 +14,13 @@ public class Main {
 			System.out.println("step = " + i);
 			System.out.println(cola);
 		}
-		
+
 		cola.resetQueue();
 		System.out.println("************************");
 		System.out.println(cola);
 
+		cola.processSell(10);
+		System.out.println(cola);
 	}
 
 	public static void fillAutomatQueue(DoubleColaAutomat dcau) {
