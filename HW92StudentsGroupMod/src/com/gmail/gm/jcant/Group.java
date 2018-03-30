@@ -72,6 +72,7 @@ public class Group implements Voenkom, Cloneable, Serializable {
 		}
 
 		List<Student> result = new ArrayList<>();
+		Student[] tmpSt = new Student[0];
 
 		for (Student student : students) {
 			if (surname.equals(student.getSurname())) {
@@ -79,7 +80,9 @@ public class Group implements Voenkom, Cloneable, Serializable {
 			}
 		}
 
-		return (Student[]) result.toArray();
+		tmpSt = result.toArray(tmpSt);
+
+		return tmpSt;
 	}
 
 	public void sortGroup(Student.SortBy field) {
@@ -150,7 +153,7 @@ public class Group implements Voenkom, Cloneable, Serializable {
 		}
 
 		res = tmp.toArray(res);
-		return  res;
+		return res;
 	}
 
 	@Override
