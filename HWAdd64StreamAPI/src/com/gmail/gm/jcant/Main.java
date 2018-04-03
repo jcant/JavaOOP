@@ -22,7 +22,7 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		System.out.println(result);
+		System.out.println("The biggest number in file is " + result);
 
 	}
 }
