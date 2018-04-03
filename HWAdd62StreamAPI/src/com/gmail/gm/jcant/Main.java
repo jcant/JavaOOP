@@ -19,7 +19,6 @@ public class Main {
 		printArr(array);
 
 		System.out.println("The nearest to zero is: " + findNullAbove(array));
-
 	}
 
 	public static void printArr(Integer[] arr) {
@@ -27,20 +26,15 @@ public class Main {
 	}
 
 	public static int findNullAbove(Integer[] arr) {
-		int result = 0;
 
 		Comparator<Integer> comp = (p1, p2) -> {
-
 			if ((Math.abs(p1) == Math.abs(p2)) && (p2 > 0)) {
 				return 1;
 			}
 			return Integer.compare(Math.abs(p1), Math.abs(p2));
-
 		};
 
-		result = Arrays.stream(arr).min(comp).get();
-
-		return result;
+		return Arrays.stream(arr).min(comp).get();
 	}
 
 }
