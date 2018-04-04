@@ -1,11 +1,14 @@
 package com.gmail.gm.jcant;
 
+import java.io.Serializable;
 import java.util.HashMap;
-//import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class Word implements Cloneable{
+public class Word implements Cloneable, Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private int probability = 100;
 	private Map<Languages, String> values = new HashMap<>();
 
@@ -79,20 +82,18 @@ public class Word implements Cloneable{
 
 	@Override
 	protected Word clone() {
-		
+
 		Word clone = new Word();
 		clone.probability = this.probability;
-		
+
 		Set<Map.Entry<Languages, String>> enset = values.entrySet();
-		
+
 		for (Map.Entry<Languages, String> entry : enset) {
 			clone.values.put(entry.getKey(), new String(entry.getValue()));
 		}
-		
+
 		return clone;
-		
+
 	}
-	
-	
 
 }
