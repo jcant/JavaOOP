@@ -21,6 +21,7 @@ public class Dictionary {
 	private NavigableMap<String, String> modeList = new TreeMap<>();
 	private Languages from = Languages.ENGLISH;
 	private Languages to = Languages.UKRAINIAN;
+	private int wordSimplifyLenght = 3;
 
 	public Dictionary() {
 		super();
@@ -51,14 +52,19 @@ public class Dictionary {
 
 	private String getNearKey(String key) {
 		Set<String> enset = modeList.keySet();
+		
+		//first test for short words and strict equals:
 
-		while (key.length() > 0) {
+		while (true) {
 			for (String entry : enset) {
 				if (entry.startsWith(key)) {
 					return entry;
 				}
 			}
 			key = key.substring(0, key.length() - 1);
+			if (key.length() < wordSimplifyLenght) {
+				break;
+			}
 		}
 		return null;
 	}

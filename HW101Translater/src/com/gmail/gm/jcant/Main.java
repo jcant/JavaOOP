@@ -9,6 +9,11 @@ public class Main {
 
 	public static void main(String[] args) {
 		Dictionary dict = new Dictionary();
+		dict.setTranslateMode(Languages.ENGLISH, Languages.UKRAINIAN);
+		testHandWordsAdd(dict);
+		String txt = "Hello big world";
+		System.out.println(dict.translate(txt));
+		
 		dict.setTranslateMode(Languages.ENGLISH, Languages.RUSSIAN);
 
 		// loadFile(dict, new File("500words_unicode.txt"));
@@ -17,13 +22,8 @@ public class Main {
 
 		System.out.println(dict.getCountPairs());
 
-		String txt = dict.taskTranslate(new File("english.in"), new File("russian.out"), true);
+		txt = dict.taskTranslate(new File("english.in"), new File("russian.out"), true);
 		System.out.println(txt);
-
-		dict.setTranslateMode(Languages.ENGLISH, Languages.UKRAINIAN);
-		testHandWordsAdd(dict);
-		txt = "Hello big world";
-		System.out.println(dict.translate(txt));
 
 	}
 
