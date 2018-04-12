@@ -1,12 +1,13 @@
 package com.gmail.gm.jcant;
 
+import java.io.File;
+
 public class Main {
 
 	public static void main(String[] args) {
 		
-		RefParser rp = new RefParser("https://prog.kiev.ua/forum/");
+		TagParser rp = new TagParser("https://prog.kiev.ua/forum/", new File("refs.txt"));
 		
-		System.out.println(rp.getSiteContent());
 	}
 
 }
