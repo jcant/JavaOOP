@@ -62,6 +62,11 @@ public class Client implements Runnable {
 			answer = getGroup();
 		}
 
+		if (action.equals("delStudent")) {
+			group.deleteStudent(new Integer(params));
+			answer = "Deletion completed";
+		}
+		
 		return header + answer;
 	}
 

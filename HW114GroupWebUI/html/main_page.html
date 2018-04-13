@@ -4,7 +4,10 @@
 	<title>Group main page</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
+	<script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
 
 	<style type="text/css">
 		.content{
@@ -46,8 +49,15 @@
 	<script type="text/javascript">
 	$(function ()
  		{
-			$('#line0').html("adsfsafasf");
 			fillGroup();
+			$('.del_btn').each(function(){
+											$(this).click(function(){
+											var id = $(this).attr('id');
+											id = id.substring(6,7);
+											delStudent(id);
+
+											});
+				});
 		});
 
 	
@@ -63,19 +73,44 @@
     		data: {},
     		success: function (data, textStatus) 
     					{
-        					console.log(data);
-        					rrr = JSON.parse(data);
-        					$('#line0').html(rrr[0]);
-        					$('#line1').html(rrr[1]);
-        					$('#line2').html(rrr[2]);
+        					//console.log(data);
+        					clearStudentsTable()
+        					JSON.parse(data).forEach(function(item, i, arr){
+        						$('#line'+i).html(item);	
+        					})
         					
     					},
     		error: function (data, textStatus) 
     					{
         					console.log(data);
-        					$('#line9').html(textStatus);
     					},
 		});
+ 	}
+
+ 	function delStudent(id){
+ 		var url = 'http://127.0.0.1:7777/delStudent:'+id;
+		
+		$.ajax({
+    		url: url,
+    		type: 'POST',
+    		data: {},
+    		dataType: 'text',
+    		async: true,
+    		success: function (data, textStatus) 
+    					{
+        					fillGroup();        					
+    					},
+    		error: function (data, textStatus) 
+    					{
+        					console.log(data);
+    					},
+		});
+ 	}
+
+ 	function clearStudentsTable(){
+ 		$('.student').each(function(){
+ 			$(this).html("empty");
+ 		});
  	}
 	
 
@@ -85,16 +120,27 @@
 
 	<div class="group_list">
 	
-		<p class="group_list_line"><span class="student" id="line0"> empty </span><span class="del_btn">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line1"> empty </span><span class="del_btn">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line2"> empty </span><span class="del_btn">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line3"> empty </span><span class="del_btn">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line4"> empty </span><span class="del_btn">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line5"> empty </span><span class="del_btn">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line6"> empty </span><span class="del_btn">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line7"> empty </span><span class="del_btn">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line8"> empty </span><span class="del_btn">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line9"> empty </span><span class="del_btn">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line0"> empty </span><span class="del_btn" id="btnDel0">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line1"> empty </span><span class="del_btn" id="btnDel1">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line2"> empty </span><span class="del_btn" id="btnDel2">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line3"> empty </span><span class="del_btn" id="btnDel3">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line4"> empty </span><span class="del_btn" id="btnDel4">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line5"> empty </span><span class="del_btn" id="btnDel5">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line6"> empty </span><span class="del_btn" id="btnDel6">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line7"> empty </span><span class="del_btn" id="btnDel7">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line8"> empty </span><span class="del_btn" id="btnDel8">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line9"> empty </span><span class="del_btn" id="btnDel9">delete</span></p>
+
+		<p class="group_list_line"><span class="student" id="line10"> empty </span><span class="del_btn" id="btnDel10">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line11"> empty </span><span class="del_btn" id="btnDel11">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line12"> empty </span><span class="del_btn" id="btnDel12">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line13"> empty </span><span class="del_btn" id="btnDel13">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line14"> empty </span><span class="del_btn" id="btnDel14">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line15"> empty </span><span class="del_btn" id="btnDel15">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line16"> empty </span><span class="del_btn" id="btnDel16">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line17"> empty </span><span class="del_btn" id="btnDe1l7">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line18"> empty </span><span class="del_btn" id="btnDel18">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line19"> empty </span><span class="del_btn" id="btnDel19">delete</span></p>
 	
 	</div>
 
