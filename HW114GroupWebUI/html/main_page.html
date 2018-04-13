@@ -2,53 +2,107 @@
 <html>
 <head>
 	<title>Group main page</title>
-</head>
-<body>
-	<style type="text/css">
-		.tr_head{
-			font-weight: 800;
-		}
-		.tr_head td{
-			border-left: 1px solid gray;
-			border-right: 1px solid gray;
-			border-bottom: 1px solid gray;
-		}
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-		.tr_body td{
-			border-bottom: 1px solid green;
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
+
+	<style type="text/css">
+		.content{
+			width: 100%;
+		}
+		.group_list{
+			width: 50%;
+			border: 1px solid grey;
+		}
+		.group_list_line{
+			padding: 0px;
+			margin: 0px;
+			border: 1px solid rgb(200,200,200);
+			border-radius: 5px;
+			/*text-align: center;*/
+		}
+		.student{
+			display: inline-block;
+			width: 90%;
+		}
+		.student:hover{
+			background: rgb(255,255,200);
+			
+		}
+		.del_btn{
+			display: inline-block;
+			text-align: center;
+			font-size: 12px;
+			color: red;
+		}
+		.del_btn:hover{
+			cursor: pointer;
+			font-weight: 800;
 		}
 
 	</style>
+</head>
+<body>
+	<script type="text/javascript">
+	$(function ()
+ 		{
+			$('#line0').html("adsfsafasf");
+			fillGroup();
+		});
 
-<table>
-	<tr class="tr_head">
-		<td>name</td>
-		<td>surname</td>
-		<td>birthday</td>
-		<td>datein</td>
-		<td>institute</td>
-		<td>score</td>
-	</tr>
-	<tr class="tr_body">
-		<td>name</td>
-		<td>surname</td>
-		<td>birthday</td>
-		<td>datein</td>
-		<td>institute</td>
-		<td>score</td>
-	</tr>
-	<tr class="tr_body">
-		<td>name</td>
-		<td>surname</td>
-		<td>birthday</td>
-		<td>datein</td>
-		<td>institute</td>
-		<td>score</td>
-	</tr>
-</table>
+	
+	function fillGroup()
+ 	{
+    	var url = 'http://127.0.0.1:7777/getGroup';
+		
+		$.ajax({
+    		url: url,
+    		type: 'POST',
+    		dataType: 'text',
+    		async: true,
+    		data: {},
+    		success: function (data, textStatus) 
+    					{
+        					console.log(data);
+        					rrr = JSON.parse(data);
+        					$('#line0').html(rrr[0]);
+        					$('#line1').html(rrr[1]);
+        					$('#line2').html(rrr[2]);
+        					
+    					},
+    		error: function (data, textStatus) 
+    					{
+        					console.log(data);
+        					$('#line9').html(textStatus);
+    					},
+		});
+ 	}
+	
+
+	</script>
+
+<div class="content">
+
+	<div class="group_list">
+	
+		<p class="group_list_line"><span class="student" id="line0"> empty </span><span class="del_btn">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line1"> empty </span><span class="del_btn">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line2"> empty </span><span class="del_btn">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line3"> empty </span><span class="del_btn">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line4"> empty </span><span class="del_btn">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line5"> empty </span><span class="del_btn">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line6"> empty </span><span class="del_btn">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line7"> empty </span><span class="del_btn">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line8"> empty </span><span class="del_btn">delete</span></p>
+		<p class="group_list_line"><span class="student" id="line9"> empty </span><span class="del_btn">delete</span></p>
+	
+	</div>
+
+</div>
+
 
 <br>
-<a href="http://127.0.0.1:7777/add_page.html">add page</a>
+<a href="http://127.0.0.1:7777/page:add_page">go to add page</a>
 
 </body>
 </html>

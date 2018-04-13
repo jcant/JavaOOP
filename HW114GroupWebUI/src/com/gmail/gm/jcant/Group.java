@@ -107,7 +107,7 @@ public class Group implements Voenkom, Cloneable, Serializable {
 	}
 
 	public Student[] getStudentsArray() {
-		return (Student[]) students.toArray();
+		return students.toArray(new Student[0]);
 	}
 
 	public Student getStudent(int number) {
