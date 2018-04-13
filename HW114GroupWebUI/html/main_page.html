@@ -13,16 +13,20 @@
 		.content{
 			width: 100%;
 		}
+		.group_score{
+			width: 50%;
+			text-align: center;
+		}
 		.group_list{
 			width: 50%;
-			border: 1px solid grey;
+			text-align: center;
 		}
 		.group_list_line{
 			padding: 0px;
 			margin: 0px;
 			border: 1px solid rgb(200,200,200);
 			border-radius: 5px;
-			/*text-align: center;*/
+			text-align: left;
 		}
 		.student{
 			display: inline-block;
@@ -41,26 +45,106 @@
 		.del_btn:hover{
 			cursor: pointer;
 			font-weight: 800;
+			color: rgb(255,150,0);
+		}
+		.empty{
+			color: rgb(180,180,180);
+			font-size: 10px;
+		}
+		.student_info{
+
 		}
 
 	</style>
 </head>
 <body>
 	<script type="text/javascript">
+	var groupInfo;
+
 	$(function ()
  		{
 			fillGroup();
-			$('.del_btn').each(function(){
-											$(this).click(function(){
-											var id = $(this).attr('id');
-											id = id.substring(6,7);
-											delStudent(id);
-
-											});
+			getGroupInfo();
+			$('.del_btn').each(function()
+			{
+				$(this).click(function()
+				{
+					var id = $(this).attr('id');
+					id = id.substring(6,7);
+					delStudent(id);
 				});
+			});
+
+			$('.student').each(function()
+			{
+				$(this).click(function()
+				{
+					var id = $(this).attr('id');
+					id = id.substring(4,5);
+					getStudent(id);
+				});
+			});
+
+			$('#submit').click(addStudent);
 		});
 
 	
+	function addStudent()
+	{
+		var name = $('#name').val(); 				name = (name=="")?("null"):(name);
+		var surname = $('#surname').val();			surname = (surname=="")?("null"):(surname);
+		var birthday = $('#birthday').val();		birthday = (birthday=="")?("null"):(birthday);
+		var male = $('#male').prop("checked");		//male = (male=="")?("null"):(male);
+		var weight = $('#weight').val();			weight = (weight=="")?("null"):(weight);
+		var height = $('#height').val();			height = (height=="")?("null"):(height);
+		var institute = $('#institute').val();		institute = (institute=="")?("null"):(institute);
+		var datein = $('#datein').val();			datein = (datein=="")?("null"):(datein);
+		var avgscore = $('#avgscore').val();		avgscore = (avgscore=="")?("null"):(avgscore);
+
+		var url = 'http://127.0.0.1:7777/addStudent:'+name+","+surname+","+male+","+birthday+","+weight+","+height+","+institute+","+datein+","+avgscore;
+		
+		$.ajax({
+    		url: url,
+    		type: 'POST',
+    		data: {},
+    		dataType: 'text',
+    		async: true,
+    		success: function (data, textStatus) 
+    					{
+        					fillGroup();
+        					getGroupInfo();        					
+    					},
+    		error: function (data, textStatus) 
+    					{
+        					console.log(data);
+    					},
+		});
+	}
+
+	function getGroupInfo()
+ 	{
+    	var url = 'http://127.0.0.1:7777/getGroupInfo';
+		
+		$.ajax({
+    		url: url,
+    		type: 'POST',
+    		dataType: 'text',
+    		async: true,
+    		data: {},
+    		success: function (data, textStatus) 
+    					{
+        					//console.log(data);
+        					groupInfo = JSON.parse(data);
+        					$('.group_name').html("Group: "+groupInfo.GroupName+" (students: "+groupInfo.StudentsCount+")");
+        					$('.group_score').html("Group average score: "+groupInfo.GroupAverageScore);
+    					},
+    		error: function (data, textStatus) 
+    					{
+        					console.log(data);
+    					},
+		});
+ 	}
+
 	function fillGroup()
  	{
     	var url = 'http://127.0.0.1:7777/getGroup';
@@ -74,9 +158,10 @@
     		success: function (data, textStatus) 
     					{
         					//console.log(data);
-        					clearStudentsTable()
-        					JSON.parse(data).forEach(function(item, i, arr){
-        						$('#line'+i).html(item);	
+        					clearStudentsTable();
+        					JSON.parse(data).forEach(function(item, i, arr)
+        					{
+        						$('#line'+i).html(item).removeClass('empty');	
         					})
         					
     					},
@@ -98,7 +183,37 @@
     		async: true,
     		success: function (data, textStatus) 
     					{
-        					fillGroup();        					
+        					fillGroup();
+        					getGroupInfo();        					
+    					},
+    		error: function (data, textStatus) 
+    					{
+        					console.log(data);
+    					},
+		});
+ 	}
+
+ 	function getStudent(id){
+ 		var url = 'http://127.0.0.1:7777/getStudent:'+id;
+		
+		$.ajax({
+    		url: url,
+    		type: 'POST',
+    		data: {},
+    		dataType: 'text',
+    		async: true,
+    		success: function (data, textStatus) 
+    					{
+        					var std = JSON.parse(data);       					
+        					$("#infName").html("Name: "+std.name);
+        					$("#infSurname").html("Surname: "+std.surname);
+        					$("#infMale").html(std.male);
+        					$("#infBirthday").html("Birthday: "+std.birthday);
+        					$("#infWeight").html("Weight: "+std.weight);
+        					$("#infHeight").html("Height: "+std.height);
+        					$("#infInstitute").html("Institute: "+std.institute);
+        					$("#infDatein").html("Date in: "+std.datein);
+        					$("#infAvgScore").html("Average score: "+std.avgscore);
     					},
     		error: function (data, textStatus) 
     					{
@@ -110,6 +225,7 @@
  	function clearStudentsTable(){
  		$('.student').each(function(){
  			$(this).html("empty");
+ 			$(this).addClass('empty');
  		});
  	}
 	
@@ -119,31 +235,50 @@
 <div class="content">
 
 	<div class="group_list">
-	
-		<p class="group_list_line"><span class="student" id="line0"> empty </span><span class="del_btn" id="btnDel0">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line1"> empty </span><span class="del_btn" id="btnDel1">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line2"> empty </span><span class="del_btn" id="btnDel2">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line3"> empty </span><span class="del_btn" id="btnDel3">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line4"> empty </span><span class="del_btn" id="btnDel4">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line5"> empty </span><span class="del_btn" id="btnDel5">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line6"> empty </span><span class="del_btn" id="btnDel6">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line7"> empty </span><span class="del_btn" id="btnDel7">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line8"> empty </span><span class="del_btn" id="btnDel8">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line9"> empty </span><span class="del_btn" id="btnDel9">delete</span></p>
 
-		<p class="group_list_line"><span class="student" id="line10"> empty </span><span class="del_btn" id="btnDel10">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line11"> empty </span><span class="del_btn" id="btnDel11">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line12"> empty </span><span class="del_btn" id="btnDel12">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line13"> empty </span><span class="del_btn" id="btnDel13">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line14"> empty </span><span class="del_btn" id="btnDel14">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line15"> empty </span><span class="del_btn" id="btnDel15">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line16"> empty </span><span class="del_btn" id="btnDel16">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line17"> empty </span><span class="del_btn" id="btnDe1l7">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line18"> empty </span><span class="del_btn" id="btnDel18">delete</span></p>
-		<p class="group_list_line"><span class="student" id="line19"> empty </span><span class="del_btn" id="btnDel19">delete</span></p>
+		<div class="group_name">qwerty</div>
 	
+		<div class="group_list_line"><div class="student" id="line0">empty</div><div class="del_btn" id="btnDel0">delete</div></div>
+		<div class="group_list_line"><div class="student" id="line1">empty</div><div class="del_btn" id="btnDel1">delete</div></div>
+		<div class="group_list_line"><div class="student" id="line2">empty</div><div class="del_btn" id="btnDel2">delete</div></div>
+		<div class="group_list_line"><div class="student" id="line3">empty</div><div class="del_btn" id="btnDel3">delete</div></div>
+		<div class="group_list_line"><div class="student" id="line4">empty</div><div class="del_btn" id="btnDel4">delete</div></div>
+		<div class="group_list_line"><div class="student" id="line5">empty</div><div class="del_btn" id="btnDel5">delete</div></div>
+		<div class="group_list_line"><div class="student" id="line6">empty</div><div class="del_btn" id="btnDel6">delete</div></div>
+		<div class="group_list_line"><div class="student" id="line7">empty</div><div class="del_btn" id="btnDel7">delete</div></div>
+		<div class="group_list_line"><div class="student" id="line8">empty</div><div class="del_btn" id="btnDel8">delete</div></div>
+		<div class="group_list_line"><div class="student" id="line9">empty</div><div class="del_btn" id="btnDel9">delete</div></div>
+
+		<div class="group_score">qwerty</div>
+
+	</div>
+	<div class="student_info">
+		<div class="student_info_row" id="infName">Name:</div>
+		<div class="student_info_row" id="infSurname">Surname:</div>
+		<div class="student_info_row" id="infMale">Male:</div>
+		<div class="student_info_row" id="infBirthday">Birthday:</div>
+		<div class="student_info_row" id="infWeight">Weight:</div>
+		<div class="student_info_row" id="infHeight">Height:</div>
+		<div class="student_info_row" id="infInstitute">Institute:</div>
+		<div class="student_info_row" id="infDatein">Date in:</div>
+		<div class="student_info_row" id="infAvgScore">AvgScore:</div>
 	</div>
 
+</div>
+<br><br>
+<div>
+	<div class="add_student">
+		<div>Name: <input type="text" id="name"> 
+			Surname: <input type="text" id="surname"> 
+			Male: <input type="checkbox" id="male"></div>
+		<div>Birthday: <input type="date" id="birthday">
+			Weight: <input type="number" id="weight">
+			Height: <input type="number" id="height"></div>
+		<div>Institute: <input type="text" id="institute">
+			Date in: <input type="date" id="datein">
+			AvgScore: <input type="number" id="avgscore"></div>
+		<div><input id="submit" type="button" value="ADD" style="width:50%;"></div>
+	</div>
 </div>
 
 

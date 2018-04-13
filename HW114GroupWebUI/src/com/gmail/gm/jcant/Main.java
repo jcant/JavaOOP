@@ -8,9 +8,9 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		Student st1 = new Student("Ivan", "Ivanov",   JDate.getDate("07-11-1978"), true, 78.2, 185, "SVMI", JDate.getDate("01-09-1995"), 11.8);
-		Student st2 = new Student("Petr", "Petrov",   JDate.getDate("07-11-1978"), true, 78.2, 185, "SVMI", JDate.getDate("01-09-1995"), 11.8);
-		Student st3 = new Student("Sidor", "Sidorov", JDate.getDate("07-11-1978"), true, 78.2, 185, "SVMI", JDate.getDate("01-09-1995"), 11.8);
+		Student st1 = new Student("Ivan", "Ivanov",   JDate.getDate("07-11-2000"), true, 78.2, 185, "SVMI", JDate.getDate("01-09-2015"), 11.8);
+		Student st2 = new Student("Petr", "Petrov",   JDate.getDate("07-11-2000"), true, 78.2, 185, "SVMI", JDate.getDate("01-09-2015"), 9.2);
+		Student st3 = new Student("Sidor", "Sidorov", JDate.getDate("07-11-2000"), true, 78.2, 185, "SVMI", JDate.getDate("01-09-2015"), 5.4);
 
 		Group gr = new Group("ATP255", new Student[] {st1,st2,st3});
 		
